@@ -1,0 +1,34 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "sabir-tailors",
+          "appId": "1:1055860128585:android:7c0e3d72002e88de547898",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "sabir-tailors",
+          "configurations": {
+            "android": "1:1055860128585:android:7c0e3d72002e88de547898",
+            "ios": "1:1055860128585:ios:6fb15e474690f3c8547898",
+            "macos": "1:1055860128585:ios:6fb15e474690f3c8547898",
+            "web": "1:1055860128585:web:08ae8bc569150303547898",
+            "windows": "1:1055860128585:web:3ff087ce47b59dcf547898"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "site": "sabir-tailors",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
