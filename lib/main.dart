@@ -8,10 +8,8 @@ import 'package:sabir_tailors/providers/MeasurementProvider.dart';
 import 'package:sabir_tailors/providers/OrderProvider.dart';
 import 'package:sabir_tailors/providers/admin%20provider.dart';
 import 'package:sabir_tailors/providers/loginProvider.dart';
-
 import 'firebase_options.dart';
-import 'Dashboard.dart'; // Import the Dashboard page
-import 'KataiPages/kataiDashboard.dart'; // Import the Katai Dashboard page
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

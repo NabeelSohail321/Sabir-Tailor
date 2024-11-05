@@ -71,6 +71,14 @@ class _MeasurementFormState extends State<MeasurementForm> {
   final TextEditingController hipController = TextEditingController();
   final TextEditingController teeraController = TextEditingController();
   final TextEditingController galaController = TextEditingController();
+
+  final TextEditingController blambaiController = TextEditingController();
+  final TextEditingController bchaatiController = TextEditingController();
+  final TextEditingController bkamarController = TextEditingController();
+  final TextEditingController bhipController = TextEditingController();
+  final TextEditingController bteeraController = TextEditingController();
+  final TextEditingController bgalaController = TextEditingController();
+
   final TextEditingController noteController = TextEditingController();
 
   String? galaType = 'Been';
@@ -84,12 +92,24 @@ class _MeasurementFormState extends State<MeasurementForm> {
     nameController.text = widget.measurement['name'] ?? '';
     mobileNoController.text = widget.measurement['mobileNo'] ?? '';
     addressController.text = widget.measurement['address'] ?? '';
+
+
     lambaiController.text = widget.measurement['lambai'] ?? '';
     chaatiController.text = widget.measurement['chaati'] ?? '';
     kamarController.text = widget.measurement['kamar'] ?? '';
     hipController.text = widget.measurement['hip'] ?? '';
     teeraController.text = widget.measurement['teera'] ?? '';
     galaController.text = widget.measurement['gala'] ?? '';
+
+
+    blambaiController.text = widget.measurement['bodylambai'] ?? '';
+    bchaatiController.text = widget.measurement['bodychaati'] ?? '';
+    bkamarController.text = widget.measurement['bodykamar'] ?? '';
+    bhipController.text = widget.measurement['bodyhip'] ?? '';
+    bteeraController.text = widget.measurement['bodyteera'] ?? '';
+    bgalaController.text = widget.measurement['bodygala'] ?? '';
+
+
     noteController.text = widget.measurement['note'] ?? '';
 
     // Initialize other variables if they exist in the measurement data
@@ -109,7 +129,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
             borderRadius: BorderRadius.circular(20),
           ),
           height: double.infinity,
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
             padding: const EdgeInsets.all(28.0),
             child: Form(
@@ -138,18 +158,89 @@ class _MeasurementFormState extends State<MeasurementForm> {
   Widget _buildWaskitMeasurements() {
     return Column(
       children: [
-        _buildTextField(lambaiController, 'Lambai',false),
-        _buildTextField(chaatiController, 'Chaati',false),
-        _buildTextField(kamarController, 'Kamar', false),
-        _buildTextField(hipController, 'Hip', false),
-        _buildTextField(teeraController, 'Teera',false),
-        _buildTextField(galaController, 'Gala', false),
+
+        Container(
+          child: Row(
+            children: [
+              Table(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                  1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                },
+                children: [
+                  TableRow(children: [
+                    Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  ]),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(blambaiController, 'Lambai',false),
+                        _buildTextField(lambaiController, 'Lambai',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bchaatiController, 'Chaati',false),
+                        _buildTextField(chaatiController, 'Chaati',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bkamarController, 'Kamar',false),
+                        _buildTextField(kamarController, 'Kamar',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bhipController, 'Hip',false),
+                        _buildTextField(hipController, 'Hip',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bteeraController, 'Teera',false),
+                        _buildTextField(teeraController, 'Teera',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bgalaController, 'Gala',false),
+                        _buildTextField(galaController, 'Gala',false),
+                      ]
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: noteController,
+                    decoration: InputDecoration(
+                      labelText: 'Note',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    maxLines: 5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Column(
             children: [
-              Text("Gala Type", style: TextStyle(fontSize: 16)),
+              Text("Gala Type", style: TextStyle(fontSize: 18,fontFamily: 'lora',fontWeight: FontWeight.bold)),
               ListTile(
                 title: const Text('Been'),
                 leading: Radio<String>(
@@ -200,24 +291,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
           },
         ),
 
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: noteController,
-            decoration: InputDecoration(
-              labelText: 'Note',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            maxLines: 5,
-          ),
-        ),
+
       ],
     );
   }
@@ -226,8 +300,12 @@ class _MeasurementFormState extends State<MeasurementForm> {
     return Card(
       child: InkWell(
         onTap: () async {
-          if (_formKey.currentState!.validate()) {
-            final ref = FirebaseDatabase.instance.ref("measurements");
+          if(lambaiController.text.isEmpty||blambaiController.text.isEmpty||chaatiController.text.isEmpty||bchaatiController.text.isEmpty||kamarController.text.isEmpty||bkamarController.text.isEmpty||hipController.text.isEmpty||bhipController.text.isEmpty||teeraController.text.isEmpty||bteeraController.text.isEmpty||galaController.text.isEmpty||bgalaController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pleasse fill all the feilds')));
+          }
+          else{
+            if (_formKey.currentState!.validate()) {
+              final ref = FirebaseDatabase.instance.ref("measurements");
 
 
 
@@ -245,6 +323,12 @@ class _MeasurementFormState extends State<MeasurementForm> {
                 'hip': hipController.text,
                 'teera': teeraController.text,
                 'gala': galaController.text,
+                'bodylambai': blambaiController.text,
+                'bodychaati': bchaatiController.text,
+                'bodykamar': bkamarController.text,
+                'bodyhip': bhipController.text,
+                'bodyteera': bteeraController.text,
+                'bodygala': bgalaController.text,
                 'galaType': galaType,
                 'fancyButton': fancyButton,
                 'note': noteController.text,
@@ -266,6 +350,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                     SnackBar(content: Text('Failed to submit data: $error')));
               });
 
+            }
           }
         },
         child: Container(

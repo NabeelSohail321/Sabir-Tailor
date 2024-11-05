@@ -122,6 +122,7 @@ class _SilaiOrdersState extends State<SilaiOrders> {
             ),
             SizedBox(height: 10),
             Text('Serial: ${order.serial}', style: TextStyle(fontSize: 16)),
+            Text('Invoice Number: ${order.invoiceNumber}', style: TextStyle(fontSize: 16)),
             Text('Suits Count: ${order.suitsCount}', style: TextStyle(fontSize: 16)),
             Text('Payment: \$${order.paymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
             Text('Order Date: ${order.orderDate.toLocal().toString().split(' ')[0]}', style: TextStyle(fontSize: 16)),

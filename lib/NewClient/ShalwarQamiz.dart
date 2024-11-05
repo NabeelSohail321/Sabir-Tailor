@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShalwarQameezMeasurementForm extends StatelessWidget {
@@ -72,6 +74,14 @@ class _MeasurementFormState extends State<MeasurementForm> {
   final TextEditingController galaController = TextEditingController();
   final TextEditingController _QameezNoteController = TextEditingController();
 
+  final TextEditingController bqameezLambaiController = TextEditingController();
+  final TextEditingController bchaatiController = TextEditingController();
+  final TextEditingController bkamarController = TextEditingController();
+  final TextEditingController bdamanController = TextEditingController();
+  final TextEditingController bbazuController = TextEditingController();
+  final TextEditingController bteeraController = TextEditingController();
+  final TextEditingController bgalaController = TextEditingController();
+
   final TextEditingController serialNoController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController mobileNoController = TextEditingController();
@@ -83,6 +93,13 @@ class _MeasurementFormState extends State<MeasurementForm> {
   final TextEditingController hipController = TextEditingController();
   final TextEditingController trouserLambaiController = TextEditingController();
   final TextEditingController ShalwarNoteController = TextEditingController();
+
+  final TextEditingController bshalwarLambaiController = TextEditingController();
+  final TextEditingController bpaunchaController = TextEditingController();
+  final TextEditingController bgheeraController = TextEditingController();
+  final TextEditingController bhipController = TextEditingController();
+  final TextEditingController btrouserLambaiController = TextEditingController();
+  final TextEditingController bShalwarNoteController = TextEditingController();
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -96,7 +113,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20)),
           height: double.infinity,
-          width: MediaQuery.of(context).size.width * 0.5,
+
+          width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
             padding: const EdgeInsets.all(28.0),
             child: Form(
@@ -124,117 +142,148 @@ class _MeasurementFormState extends State<MeasurementForm> {
                   Card(
                     child: InkWell(
                       onTap:!isLoading? () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        if (_formKey.currentState!.validate()) {
-                          // Create a map to store all the data
-                          final ref =
-                              FirebaseDatabase.instance.ref("measurements");
 
-                          // Check if a record with the same serialNo already exists
-                          DataSnapshot snapshot = await ref
-                              .child("ShalwarQameez")
-                              .orderByChild('serialNo')
-                              .equalTo(serialNoController.text)
-                              .once()
-                              .then((value) => value.snapshot);
+                        if(qameezLambaiController.text.isEmpty||bqameezLambaiController.text.isEmpty||chaatiController.text.isEmpty||bchaatiController.text.isEmpty||kamarController.text.isEmpty||bkamarController.text.isEmpty||damanController.text.isEmpty||bdamanController.text.isEmpty||bazuController.text.isEmpty||bbazuController.text.isEmpty||teeraController.text.isEmpty||bteeraController.text.isEmpty||galaController.text.isEmpty||bgalaController.text.isEmpty||shalwarLambaiController.text.isEmpty||bshalwarLambaiController.text.isEmpty||paunchaController.text.isEmpty||bpaunchaController.text.isEmpty||gheeraController.text.isEmpty||bgheeraController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
 
-                          if (snapshot.value == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please fill all the fields')));
+                        }else{
+                          setState(() {
+                            isLoading = true;
+                          });
+                          if (_formKey.currentState!.validate()) {
+                            // Create a map to store all the data
+                            final ref =
+                            FirebaseDatabase.instance.ref("measurements");
 
-                            final ref = FirebaseDatabase.instance.ref("measurements");
+                            // Check if a record with the same serialNo already exists
+                            DataSnapshot snapshot = await ref
+                                .child("ShalwarQameez")
+                                .orderByChild('serialNo')
+                                .equalTo(serialNoController.text)
+                                .once()
+                                .then((value) => value.snapshot);
 
-                            String id = ref.push().key.toString();
-                            Map<String, dynamic> formData = {
-                              'id': id,
-                              'serialNo': serialNoController.text,
-                              'name': nameController.text,
-                              'mobileNo': mobileNoController.text,
-                              'address': addressController.text,
-                              'qameezLambai': qameezLambaiController.text,
-                              'chaati': chaatiController.text,
-                              'kamar': kamarController.text,
-                              'daman': damanController.text,
-                              'bazu': bazuController.text,
-                              'teera': teeraController.text,
-                              'gala': galaController.text,
-                              'kaff': kaff,
-                              'shalwartype': selectedBottomType,
-                              'shalwarPocket': shalwarPocket,
-                              'frontPocket': frontPocket,
-                              'sidePocket': sidePocket,
-                              'selectedKalarOrBeen': selectedKalarOrBeen,
-                              'selectedDamanStyle': selectedDamanStyle,
-                              'selectedSilaiType': selectedSilaiType,
-                              'shalwarLambai': shalwarLambaiController.text,
-                              'trouserLambai': trouserLambaiController.text,
-                              'shalwarGhera': gheeraController.text,
-                              'pauncha': paunchaController.text,
-                              'gheera': gheeraController.text,
-                              'hip': hipController.text,
-                              'selectedBottomType': selectedBottomType,
-                              'elasticDoori': elasticDoori,
-                              'QameezNote': _QameezNoteController.text,
-                              'ShalwarNote': ShalwarNoteController.text,
-                            };
+                            if (snapshot.value == null) {
+
+                              final ref = FirebaseDatabase.instance.ref("measurements");
+
+                              String id = ref.push().key.toString();
+                              Map<String, dynamic> formData = {
+                                'id': id,
+                                'serialNo': serialNoController.text,
+                                'name': nameController.text,
+                                'mobileNo': mobileNoController.text,
+                                'address': addressController.text,
+                                'qameezLambai': qameezLambaiController.text,
+                                'chaati': chaatiController.text,
+                                'kamar': kamarController.text,
+                                'daman': damanController.text,
+                                'bazu': bazuController.text,
+                                'teera': teeraController.text,
+                                'gala': galaController.text,
+                                'bodyqameezLambai': bqameezLambaiController.text,
+                                'bodychaati': bchaatiController.text,
+                                'bodykamar': bkamarController.text,
+                                'bodydaman': bdamanController.text,
+                                'bodybazu': bbazuController.text,
+                                'bodyteera': bteeraController.text,
+                                'bodygala': bgalaController.text,
+                                'kaff': kaff,
+                                'shalwartype': selectedBottomType,
+                                'shalwarPocket': shalwarPocket,
+                                'frontPocket': frontPocket,
+                                'sidePocket': sidePocket,
+                                'selectedKalarOrBeen': selectedKalarOrBeen,
+                                'selectedDamanStyle': selectedDamanStyle,
+                                'selectedSilaiType': selectedSilaiType,
+                                'shalwarLambai': shalwarLambaiController.text,
+                                'trouserLambai': trouserLambaiController.text,
+                                'shalwarGhera': gheeraController.text,
+                                'pauncha': paunchaController.text,
+                                'gheera': gheeraController.text,
+                                'hip': hipController.text,
+                                'bodyshalwarLambai': bshalwarLambaiController.text,
+                                'bodytrouserLambai': btrouserLambaiController.text,
+                                'bodyshalwarGhera': bgheeraController.text,
+                                'bodypauncha': bpaunchaController.text,
+                                'bodygheera': bgheeraController.text,
+                                'bodyhip': hipController.text,
+                                'selectedBottomType': selectedBottomType,
+                                'elasticDoori': elasticDoori,
+                                'QameezNote': _QameezNoteController.text,
+                                'ShalwarNote': ShalwarNoteController.text,
+                                'trouserPocket': trouserPocket
+                              };
 
 // Store data in Firebase Realtime Database
-                            ref
-                                .child('ShalwarQameez/${id}')
-                                .set(formData)
-                                .then((value) {
+                              ref
+                                  .child('ShalwarQameez/${id}')
+                                  .set(formData)
+                                  .then((value) {
 // Clear all the text fields after successful submission
-                              serialNoController.clear();
-                              nameController.clear();
-                              mobileNoController.clear();
-                              addressController.clear();
-                              qameezLambaiController.clear();
-                              chaatiController.clear();
-                              kamarController.clear();
-                              damanController.clear();
-                              bazuController.clear();
-                              teeraController.clear();
-                              galaController.clear();
-                              shalwarLambaiController.clear();
-                              paunchaController.clear();
-                              gheeraController.clear();
-                              hipController.clear();
-
+                                serialNoController.clear();
+                                nameController.clear();
+                                mobileNoController.clear();
+                                addressController.clear();
+                                qameezLambaiController.clear();
+                                chaatiController.clear();
+                                kamarController.clear();
+                                damanController.clear();
+                                bazuController.clear();
+                                teeraController.clear();
+                                galaController.clear();
+                                shalwarLambaiController.clear();
+                                paunchaController.clear();
+                                gheeraController.clear();
+                                hipController.clear();
+                                bgheeraController.clear();
+                                bpaunchaController.clear();
+                                bshalwarLambaiController.clear();
+                                bgalaController.clear();
+                                bteeraController.clear();
+                                bbazuController.clear();
+                                bdamanController.clear();
+                                bkamarController.clear();
+                                bchaatiController.clear();
+                                bhipController.clear();
+                                bqameezLambaiController.clear();
+                                btrouserLambaiController.clear();
 // Reset checkbox and radio values
-                              setState(() {
-                                kaff = false;
-                                shalwarPocket = false;
-                                frontPocket = false;
-                                sidePocket = false;
-                                elasticDoori = false;
-                                selectedBottomType =
-                                'Shalwar'; // Reset to default
-                                selectedKalarOrBeen = 'Kalar';
-                                selectedDamanStyle = 'Gool';
-                                selectedSilaiType = 'Double Silai';
-                                isLoading = false;
-                              });
+                                setState(() {
+                                  kaff = false;
+                                  shalwarPocket = false;
+                                  frontPocket = false;
+                                  sidePocket = false;
+                                  elasticDoori = false;
+                                  selectedBottomType =
+                                  'Shalwar'; // Reset to default
+                                  selectedKalarOrBeen = 'Kalar';
+                                  selectedDamanStyle = 'Gool';
+                                  selectedSilaiType = 'Double Silai';
+                                  isLoading = false;
+                                });
 
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text('Data submitted successfully')));
-                            }).catchError((error) {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content:
-                                  Text('Failed to submit data: $error')));
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text('Data submitted successfully')));
+                              }).catchError((error) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content:
+                                    Text('Failed to submit data: $error')));
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              });
+                            }
+                            else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Serial Already exists')));
                               setState(() {
                                 isLoading = false;
                               });
-                            });
+                            }
                           }
                           else{
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Serial Already exists')));
-                            setState(() {
-                              isLoading = false;
-                            });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Button not working')));
                           }
-                        }
-                        else{
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Button not working')));
                         }
                       }:(){},
                       child: Container(
@@ -274,158 +323,330 @@ class _MeasurementFormState extends State<MeasurementForm> {
   // Qameez section form fields
   Widget _buildQameezSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: qameezLambaiController,
-            decoration: InputDecoration(
-              labelText: 'Lambai',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
+        Container(
+          child: Row(
+            children: [
+              Table(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                  1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                },
+                children: [
+                  TableRow(children: [
+                    Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bqameezLambaiController,
+                        decoration: InputDecoration(
+                          labelText: 'Lambai',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: qameezLambaiController,
+                        decoration: InputDecoration(
+                          labelText: 'Lambai',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bchaatiController,
+                        decoration: InputDecoration(
+                          labelText: 'Chaati',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: chaatiController,
+                        decoration: InputDecoration(
+                          labelText: 'Chaati',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bkamarController,
+                        decoration: InputDecoration(
+                          labelText: 'Kamar',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: kamarController,
+                        decoration: InputDecoration(
+                          labelText: 'Kamar',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bdamanController,
+                        decoration: InputDecoration(
+                          labelText: 'Daman',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: damanController,
+                        decoration: InputDecoration(
+                          labelText: 'Daman',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    )
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bbazuController,
+                        decoration: InputDecoration(
+                          labelText: 'Bazu',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bazuController,
+                        decoration: InputDecoration(
+                          labelText: 'Bazu',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    )
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bteeraController,
+                        decoration: InputDecoration(
+                          labelText: 'Teera',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: teeraController,
+                        decoration: InputDecoration(
+                          labelText: 'Teera',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: bgalaController,
+                        decoration: InputDecoration(
+                          labelText: 'Gala',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: galaController,
+                        decoration: InputDecoration(
+                          labelText: 'Gala',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ]),
+                ],
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _QameezNoteController,
+                    decoration: InputDecoration(
+                      labelText: 'Note',
+                      hintText: 'Enter any additional information or note here',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    maxLines: 10,
+                  ),
+                ),
               ),
-            ),
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
             ],
-            keyboardType: TextInputType.number,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: chaatiController,
-            decoration: InputDecoration(
-              labelText: 'Chaati',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: kamarController,
-            decoration: InputDecoration(
-              labelText: 'Kamar',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: damanController,
-            decoration: InputDecoration(
-              labelText: 'Daman',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: bazuController,
-            decoration: InputDecoration(
-              labelText: 'Bazu',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: teeraController,
-            decoration: InputDecoration(
-              labelText: 'Teera',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: galaController,
-            decoration: InputDecoration(
-              labelText: 'Gala',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly, // Allows only digits
-            ],
-          ),
-        ),
+        // The rest of your widgets
         CheckboxListTile(
-          title: Text(
-            'Kaff',
-          ),
+          title: Text('Kaff'),
           value: kaff,
           onChanged: (bool? value) {
             setState(() {
@@ -460,6 +681,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
             });
           },
         ),
+
         _buildRadioGroup(
           title: 'Kalar or Been',
           options: ['Kalar', 'Been'],
@@ -490,25 +712,12 @@ class _MeasurementFormState extends State<MeasurementForm> {
             });
           },
         ),
-        TextFormField(
-          controller: _QameezNoteController,
-          decoration: InputDecoration(
-            labelText: 'Note',
-            hintText: 'Enter any additional information or note here',
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2.0),
-              borderRadius: BorderRadius.circular(10.0), // Rounded corners
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2.0),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-          maxLines: 10,
-        ),
+        // Continue with other CheckboxListTiles, RadioGroups, and other widgets
+
       ],
     );
   }
+
 
   Widget _buildAdditionalFields() {
     return Column(
@@ -598,6 +807,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
   // Shalwar/Trouser section form fields
   Widget _buildBottomSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildRadioGroup(
           title: 'Bottom Type',
@@ -609,135 +819,313 @@ class _MeasurementFormState extends State<MeasurementForm> {
             });
           },
         ),
-        if (selectedBottomType == 'Shalwar') ...[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: shalwarLambaiController,
-              decoration: InputDecoration(
-                labelText: 'Shalwar Lambai',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
+        Row(
+          children: [
+            Container(
+              child: selectedBottomType == 'Shalwar'? Table(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                  1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25),
+                },
+                children: [
+                  TableRow(
+                      children: [
+                        Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ]
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: bshalwarLambaiController,
+                          decoration: InputDecoration(
+                            labelText: 'Shalwar Lambai',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: shalwarLambaiController,
+                          decoration: InputDecoration(
+                            labelText: 'Shalwar Lambai',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: bpaunchaController,
+                          decoration: InputDecoration(
+                            labelText: 'Pauncha',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: paunchaController,
+                          decoration: InputDecoration(
+                            labelText: 'Pauncha',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: bgheeraController,
+                          decoration: InputDecoration(
+                            labelText: 'Shalwar Gheera',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: gheeraController,
+                          decoration: InputDecoration(
+                            labelText: 'Shalwar Gheera',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ):Table(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                  1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25),
+                },
+                children: [
+                  TableRow(
+                      children: [
+                        Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ]
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: btrouserLambaiController,
+                          decoration: InputDecoration(
+                            labelText: 'Trouser Lambai',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: trouserLambaiController,
+                          decoration: InputDecoration(
+                            labelText: 'Trouser Lambai',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: bpaunchaController,
+                          decoration: InputDecoration(
+                            labelText: 'Pauncha',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: paunchaController,
+                          decoration: InputDecoration(
+                            labelText: 'Pauncha',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: bhipController,
+                          decoration: InputDecoration(
+                            labelText: 'Hip',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: hipController,
+                          decoration: InputDecoration(
+                            labelText: 'Hip',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: ShalwarNoteController,
+                  decoration: InputDecoration(
+                    labelText: 'Note',
+                    hintText: 'Enter any additional information or note here',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  maxLines: 10,
                 ),
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly, // Allows only digits
-              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: paunchaController,
-              decoration: InputDecoration(
-                labelText: 'Pauncha',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly, // Allows only digits
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: gheeraController,
-              decoration: InputDecoration(
-                labelText: 'Shalwar Gheera',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly, // Allows only digits
-              ],
-            ),
-          ),
-        ] else ...[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: trouserLambaiController,
-              decoration: InputDecoration(
-                labelText: 'Trouser Lambai',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly, // Allows only digits
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: paunchaController,
-              decoration: InputDecoration(
-                labelText: 'Pauncha',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly, // Allows only digits
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: hipController,
-              decoration: InputDecoration(
-                labelText: 'Hip',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly, // Allows only digits
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
+
         CheckboxListTile(
           title: Text('Trouser Pocket'),
           value: trouserPocket,
@@ -756,22 +1144,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
             });
           },
         ),
-        TextFormField(
-          controller: ShalwarNoteController,
-          decoration: InputDecoration(
-            labelText: 'Note',
-            hintText: 'Enter any additional information or note here',
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2.0),
-              borderRadius: BorderRadius.circular(10.0), // Rounded corners
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2.0),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-          maxLines: 10,
-        ),
+        
       ],
     );
   }

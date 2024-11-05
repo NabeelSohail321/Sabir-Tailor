@@ -117,6 +117,8 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
               pw.Text('Number of Suits: ${suitsCountController.text}'),
               pw.Text('Total Payment: ${paymentController.text}'),
               pw.Text('Advance Payment: ${AdvancepaymentController.text}'),
+              pw.Text('Order Date: ${DateTime.now()?.toLocal()}'),
+
               pw.Text('Completion Date: ${completionDate?.toLocal()}'),
               pw.Text('Remaining Payment: ${(double.tryParse(paymentController.text))! - (double.parse(AdvancepaymentController.text))}'),
               pw.SizedBox(height: 40),
@@ -198,43 +200,53 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
   }
 
   void placeOrder() {
-    if (_formKey.currentState!.validate() && completionDate != null) {
+    if(searchResults.isEmpty||suitsCountController.text.isEmpty||paymentController.text.isEmpty||completionDate==null){
 
-      final suitsCount = int.tryParse(suitsCountController.text.trim());
-      final paymentAmount = double.tryParse(paymentController.text.trim());
-      final AdvancepaymentAmount = double.tryParse(AdvancepaymentController.text.trim());
-      final remainingAmount = paymentAmount!-AdvancepaymentAmount!;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fill all The fields first then place the order')));
+    }
+    else{
 
-      final orderRef = FirebaseDatabase.instance.ref('orders');
-      String id = orderRef.push().key.toString();
-
-      orderRef.child(id).set({
-        "id": id,
-        'measurementType': selectedMeasurementType,
-        'serial': serialController.text.trim(),
-        'suitsCount': suitsCount,
-        'paymentAmount': paymentAmount,
-        'AdvancePayment': AdvancepaymentAmount ?? '0',
-        'reaminingAmount': remainingAmount,
-        'orderDate': DateTime.now().toIso8601String(),
-        'completionDate': completionDate!.toIso8601String(), // Add completion date
-        'invoiceNumber': invoiceNumber
-      }).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Order placed successfully!")),
-        );
+      if (_formKey.currentState!.validate() && completionDate != null) {
         setState(() {
-          isLoading=false;
+          isLoading = true;
         });
-        _clearFields();
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: $error")),
-        );
-        setState(() {
-          isLoading=false;
+        final suitsCount = int.tryParse(suitsCountController.text.trim());
+        final paymentAmount = double.tryParse(paymentController.text.trim());
+        final AdvancepaymentAmount = double.tryParse(AdvancepaymentController.text.trim());
+        final remainingAmount = paymentAmount!-AdvancepaymentAmount!;
+
+        final orderRef = FirebaseDatabase.instance.ref('orders');
+        String id = orderRef.push().key.toString();
+
+        orderRef.child(id).set({
+          "id": id,
+          'measurementType': selectedMeasurementType,
+          'serial': serialController.text.trim(),
+          'suitsCount': suitsCount,
+          'paymentAmount': paymentAmount,
+          'AdvancePayment': AdvancepaymentAmount ?? '0',
+          'reaminingAmount': remainingAmount,
+          'orderDate': DateTime.now().toIso8601String(),
+          'completionDate': completionDate!.toIso8601String(), // Add completion date
+          'invoiceNumber': invoiceNumber
+        }).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Order placed successfully!")),
+          );
+          setState(() {
+            isLoading=false;
+          });
+          _clearFields();
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: $error")),
+          );
+          setState(() {
+            isLoading=false;
+          });
         });
-      });
+      }
+
     }
   }
 
@@ -267,6 +279,7 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
 
   @override
   Widget build(BuildContext context) {
+    AdvancepaymentController.text = "0";
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Center(
@@ -558,9 +571,7 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
       child: InkWell(
         onTap: !isLoading? () async {
 
-          setState(() {
-            isLoading = true;
-          });
+
           invoiceNumber = DateTime.now().millisecondsSinceEpoch;
            await _generateAndPrintPDF();
            placeOrder();

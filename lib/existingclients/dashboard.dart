@@ -120,7 +120,6 @@ class _ExistingClientDashboardState extends State<ExistingClientDashboard> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text("Measurements", style: GoogleFonts.lora()),
         titleTextStyle: TextStyle(
           fontSize: titleFontSize as double, // Responsive font size for title

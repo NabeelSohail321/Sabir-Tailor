@@ -686,3 +686,275 @@
 // );
 // },
 // ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Widget _buildQameezSection() {
+//   return Column(
+//     children: [
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: qameezLambaiController,
+//           decoration: InputDecoration(
+//             labelText: 'Lambai',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//           keyboardType: TextInputType.number,
+//         ),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: chaatiController,
+//           decoration: InputDecoration(
+//             labelText: 'Chaati',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           keyboardType: TextInputType.number,
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//         ),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: kamarController,
+//           decoration: InputDecoration(
+//             labelText: 'Kamar',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           keyboardType: TextInputType.number,
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//         ),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: damanController,
+//           decoration: InputDecoration(
+//             labelText: 'Daman',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           keyboardType: TextInputType.number,
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//         ),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: bazuController,
+//           decoration: InputDecoration(
+//             labelText: 'Bazu',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           keyboardType: TextInputType.number,
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//         ),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: teeraController,
+//           decoration: InputDecoration(
+//             labelText: 'Teera',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           keyboardType: TextInputType.number,
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//         ),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: TextFormField(
+//           controller: galaController,
+//           decoration: InputDecoration(
+//             labelText: 'Gala',
+//             enabledBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//             ),
+//             focusedBorder: OutlineInputBorder(
+//               borderSide: BorderSide(color: Colors.black, width: 2.0),
+//               borderRadius: BorderRadius.circular(10.0),
+//             ),
+//           ),
+//           keyboardType: TextInputType.number,
+//           inputFormatters: <TextInputFormatter>[
+//             FilteringTextInputFormatter.digitsOnly, // Allows only digits
+//           ],
+//         ),
+//       ),
+//       CheckboxListTile(
+//         title: Text(
+//           'Kaff',
+//         ),
+//         value: kaff,
+//         onChanged: (bool? value) {
+//           setState(() {
+//             kaff = value!;
+//           });
+//         },
+//       ),
+//       CheckboxListTile(
+//         title: Text('Shalwar Pocket'),
+//         value: shalwarPocket,
+//         onChanged: (bool? value) {
+//           setState(() {
+//             shalwarPocket = value!;
+//           });
+//         },
+//       ),
+//       CheckboxListTile(
+//         title: Text('Front Pocket'),
+//         value: frontPocket,
+//         onChanged: (bool? value) {
+//           setState(() {
+//             frontPocket = value!;
+//           });
+//         },
+//       ),
+//       CheckboxListTile(
+//         title: Text('Side Pocket'),
+//         value: sidePocket,
+//         onChanged: (bool? value) {
+//           setState(() {
+//             sidePocket = value!;
+//           });
+//         },
+//       ),
+//       _buildRadioGroup(
+//         title: 'Kalar or Been',
+//         options: ['Kalar', 'Been'],
+//         groupValue: selectedKalarOrBeen,
+//         onChanged: (value) {
+//           setState(() {
+//             selectedKalarOrBeen = value!;
+//           });
+//         },
+//       ),
+//       _buildRadioGroup(
+//         title: 'Daman Style',
+//         options: ['Gool', 'Choras'],
+//         groupValue: selectedDamanStyle,
+//         onChanged: (value) {
+//           setState(() {
+//             selectedDamanStyle = value!;
+//           });
+//         },
+//       ),
+//       _buildRadioGroup(
+//         title: 'Silai Type',
+//         options: ['Double Silai', 'Triple Silai'],
+//         groupValue: selectedSilaiType,
+//         onChanged: (value) {
+//           setState(() {
+//             selectedSilaiType = value!;
+//           });
+//         },
+//       ),
+//       TextFormField(
+//         controller: _QameezNoteController,
+//         decoration: InputDecoration(
+//           labelText: 'Note',
+//           hintText: 'Enter any additional information or note here',
+//           enabledBorder: OutlineInputBorder(
+//             borderSide: BorderSide(color: Colors.black, width: 2.0),
+//             borderRadius: BorderRadius.circular(10.0), // Rounded corners
+//           ),
+//           focusedBorder: OutlineInputBorder(
+//             borderSide: BorderSide(color: Colors.black, width: 2.0),
+//             borderRadius: BorderRadius.circular(10.0),
+//           ),
+//         ),
+//         maxLines: 10,
+//       ),
+//     ],
+//   );
+// }

@@ -18,8 +18,7 @@ class PantsMeasurementForm extends StatefulWidget {
 class _PantsMeasurementFormState extends State<PantsMeasurementForm> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("Pants Measurement Form", style: GoogleFonts.lora()),
           titleTextStyle: TextStyle(
@@ -47,8 +46,7 @@ class _PantsMeasurementFormState extends State<PantsMeasurementForm> {
             PantsForm(measurement: widget.measurement,), // Assuming PantsForm is another widget you have defined
           ],
         ),
-      ),
-    );
+      );
   }
 }
 class PantsForm extends StatefulWidget {
@@ -68,11 +66,20 @@ class _PantsFormState extends State<PantsForm> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController mobileNoController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+
+
   final TextEditingController lambaiController = TextEditingController();
   final TextEditingController hipController = TextEditingController();
   final TextEditingController kamarController = TextEditingController();
   final TextEditingController thaiController = TextEditingController();
   final TextEditingController paunchaController = TextEditingController();
+
+  final TextEditingController blambaiController = TextEditingController();
+  final TextEditingController bhipController = TextEditingController();
+  final TextEditingController bkamarController = TextEditingController();
+  final TextEditingController bthaiController = TextEditingController();
+  final TextEditingController bpaunchaController = TextEditingController();
+
   final TextEditingController noteController = TextEditingController();
 
   // Checkbox for Smart Fitting
@@ -91,6 +98,14 @@ class _PantsFormState extends State<PantsForm> {
     kamarController.text = widget.measurement['kamar'] ?? '';
     thaiController.text = widget.measurement['thai'] ?? '';
     paunchaController.text = widget.measurement['pauncha'] ?? '';
+
+    blambaiController.text = widget.measurement['bodylambai'] ?? '';
+    bhipController.text = widget.measurement['bodyhip'] ?? '';
+    bkamarController.text = widget.measurement['bodykamar'] ?? '';
+    bthaiController.text = widget.measurement['bodythai'] ?? '';
+    bpaunchaController.text = widget.measurement['bodypauncha'] ?? '';
+
+
     noteController.text = widget.measurement['note'] ?? '';
 
     // Initialize smartFitting if it's in the measurement map
@@ -108,7 +123,7 @@ class _PantsFormState extends State<PantsForm> {
             borderRadius: BorderRadius.circular(20),
           ),
           height: double.infinity,
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
             padding: const EdgeInsets.all(28.0),
             child: Form(
@@ -141,11 +156,79 @@ class _PantsFormState extends State<PantsForm> {
   Widget _buildPantsMeasurements() {
     return Column(
       children: [
-        _buildTextField(lambaiController, 'Lambai', false),
-        _buildTextField(hipController, 'Hip', false),
-        _buildTextField(kamarController, 'Kamar', false),
-        _buildTextField(thaiController, 'Thai', false),
-        _buildTextField(paunchaController, 'Pauncha', false),
+
+        Container(
+          child: Row(
+            children: [
+              Table(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                  1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                },
+                children: [
+                  TableRow(children: [
+                    Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  ]),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(blambaiController, 'Lambai',false),
+                        _buildTextField(lambaiController, 'Lambai',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bhipController, 'Hip',false),
+                        _buildTextField(hipController, 'Hip',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bkamarController, 'Kamar',false),
+                        _buildTextField(kamarController, 'Kamar',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bthaiController, 'Thai',false),
+                        _buildTextField(thaiController, 'Thai',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bpaunchaController, 'Pauncha',false),
+                        _buildTextField(paunchaController, 'Pauncha',false),
+                      ]
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: noteController,
+                    decoration: InputDecoration(
+                      labelText: 'Note',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    maxLines: 5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+
+
 
         // Checkbox for Smart Fitting
         CheckboxListTile(
@@ -159,24 +242,7 @@ class _PantsFormState extends State<PantsForm> {
         ),
 
         // Note Field
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: noteController,
-            decoration: InputDecoration(
-              labelText: 'Note',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            maxLines: 5,
-          ),
-        ),
+
       ],
     );
   }
@@ -185,13 +251,17 @@ class _PantsFormState extends State<PantsForm> {
     return Card(
       child: InkWell(
         onTap: () async {
-          if (_formKey.currentState!.validate()) {
-            final ref = FirebaseDatabase.instance.ref("measurements");
+          if(lambaiController.text.isEmpty||blambaiController.text.isEmpty||hipController.text.isEmpty||bhipController.text.isEmpty||kamarController.text.isEmpty||bkamarController.text.isEmpty||thaiController.text.isEmpty||bthaiController.text.isEmpty||paunchaController.text.isEmpty||bpaunchaController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pleasse fill all the feilds')));
+          }
+          else{
+            if (_formKey.currentState!.validate()) {
+              final ref = FirebaseDatabase.instance.ref("measurements");
 
-            // Check if a record with the same serialNo already exists
+              // Check if a record with the same serialNo already exists
 
 
-            // If no existing record found, proceed with adding data
+              // If no existing record found, proceed with adding data
               String id = widget.measurement['id'];
               Map<String, dynamic> formData = {
                 'id': id,
@@ -204,6 +274,11 @@ class _PantsFormState extends State<PantsForm> {
                 'kamar': kamarController.text,
                 'thai': thaiController.text,
                 'pauncha': paunchaController.text,
+                'bodylambai': blambaiController.text,
+                'bodyhip': bhipController.text,
+                'bodykamar': bkamarController.text,
+                'bodythai': bthaiController.text,
+                'bodypauncha': bpaunchaController.text,
                 'smartFitting': smartFitting,
                 'note': noteController.text,
               };
@@ -221,6 +296,7 @@ class _PantsFormState extends State<PantsForm> {
                     SnackBar(content: Text('Failed to submit data: $error')));
               });
 
+            }
           }
         },
         child: Container(
@@ -234,7 +310,7 @@ class _PantsFormState extends State<PantsForm> {
           ),
           child: Center(
             child: Text(
-              'Submit',
+              'Update',
               style: TextStyle(
                 fontSize: 25,
                 color: Colors.white,

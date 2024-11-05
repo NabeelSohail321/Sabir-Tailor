@@ -65,21 +65,81 @@ class _SherwaniMeasurementShowPageState extends State<SherwaniMeasurementShowPag
             Text("Sherwani Measurements", style: GoogleFonts.lora(fontSize: 22, fontWeight: FontWeight.bold)),
             Divider(),
             // Displaying the sherwani measurements as read-only text fields
-            _buildReadOnlyField("Lambai", measurement?['lambai']),
-            _buildReadOnlyField("Chaati", measurement?['chaati']),
-            _buildReadOnlyField("Kamar", measurement?['kamar']),
-            _buildReadOnlyField("Hip", measurement?['hip']),
-            _buildReadOnlyField("Baazu", measurement?['bazu']),
-            _buildReadOnlyField("Teera", measurement?['teera']),
-            _buildReadOnlyField("Gala", measurement?['gala']),
-            _buildReadOnlyField("Cross Back", measurement?['crossBack']),
+            Container(
+              child: Row(
+                children: [
+                  Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                      1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                    },
+                    children: [
+                      TableRow(children: [
+                        Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ]),
+
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Lambai", measurement?['bodylambai']),
+                            _buildReadOnlyField("Lambai", measurement?['lambai']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Chaati", measurement?['bodychaati']),
+                            _buildReadOnlyField("Chaati", measurement?['chaati']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Kamar", measurement?['bodykamar']),
+                            _buildReadOnlyField("Kamar", measurement?['kamar']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Hip", measurement?['bodyhip']),
+                            _buildReadOnlyField("Hip", measurement?['hip']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Baazu", measurement?['bodybazu']),
+                            _buildReadOnlyField("Baazu", measurement?['bazu']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Teera", measurement?['bodyteera']),
+                            _buildReadOnlyField("Teera", measurement?['teera']),
+
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Gala", measurement?['bodygala']),
+                            _buildReadOnlyField("Gala", measurement?['gala']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Cross Back", measurement?['bodycrossBack']),
+                            _buildReadOnlyField("Cross Back", measurement?['crossBack']),
+                          ]
+                      ),
+                    ],
+                  ),
+                  Expanded(child: _buildReadOnlyField("Note: ", measurement?['note'])),
+
+                ],
+              ),
+            ),
 
             // Checkbox Options
             // _buildReadOnlyCheckbox("Fancy Button", measurement?['fancyButton']),
             // _buildReadOnlyCheckbox("Special Request", measurement?['specialRequest']),
 
-            // Note Field
-            _buildReadOnlyField("Note", measurement?['note']),
           ],
         ),
       ),
@@ -88,16 +148,21 @@ class _SherwaniMeasurementShowPageState extends State<SherwaniMeasurementShowPag
 
   Widget _buildReadOnlyField(String title, dynamic value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: GoogleFonts.lora(fontSize: 18)),
+          Text(title, style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'lora',fontWeight: FontWeight.bold)),
           Container(
             width: 150,
             child: Text(
               value?.toString() ?? "N/A",
-              style: GoogleFonts.lora(fontSize: 18),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'lora',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+              ),
               textAlign: TextAlign.end,
             ),
           ),
@@ -107,15 +172,11 @@ class _SherwaniMeasurementShowPageState extends State<SherwaniMeasurementShowPag
   }
 
   Widget _buildReadOnlyCheckbox(String title, bool? value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: GoogleFonts.lora(fontSize: 18)),
-        Checkbox(
-          value: value ?? false,
-          onChanged: null, // Make it read-only
-        ),
-      ],
+    return CheckboxListTile(
+      title: Text(title, style: TextStyle(color: Colors.black,fontFamily: 'lora',fontSize: 18,fontWeight: FontWeight.bold),),
+      value: value ?? false,
+      onChanged: null, // Disable interaction
+      controlAffinity: ListTileControlAffinity.leading, // Place checkbox on the left
     );
   }
 

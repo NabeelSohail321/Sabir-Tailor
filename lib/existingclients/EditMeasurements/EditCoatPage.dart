@@ -81,6 +81,16 @@ class _MeasurementFormState extends State<MeasurementForm> {
   final TextEditingController crossBackController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
 
+
+  final TextEditingController blambaiController = TextEditingController();
+  final TextEditingController bchaatiController = TextEditingController();
+  final TextEditingController bkamarController = TextEditingController();
+  final TextEditingController bhipController = TextEditingController();
+  final TextEditingController bbazuController = TextEditingController();
+  final TextEditingController bteeraController = TextEditingController();
+  final TextEditingController bgalaController = TextEditingController();
+  final TextEditingController bcrossBackController = TextEditingController();
+
   // Checkbox fields
   bool twoButtons = false;
   bool sideJak = false;
@@ -103,6 +113,16 @@ class _MeasurementFormState extends State<MeasurementForm> {
     teeraController.text = widget.measurement['teera'] ?? '';
     galaController.text = widget.measurement['gala'] ?? '';
     crossBackController.text = widget.measurement['crossBack'] ?? '';
+
+    blambaiController.text = widget.measurement['bodylambai'] ?? '';
+    bchaatiController.text = widget.measurement['bodychaati'] ?? '';
+    bkamarController.text = widget.measurement['bodykamar'] ?? '';
+    bhipController.text = widget.measurement['bodyhip'] ?? '';
+    bbazuController.text = widget.measurement['bodybazu'] ?? '';
+    bteeraController.text = widget.measurement['bodyteera'] ?? '';
+    bgalaController.text = widget.measurement['bodygala'] ?? '';
+    bcrossBackController.text = widget.measurement['bodycrossBack'] ?? '';
+
     noteController.text = widget.measurement['note'] ?? '';
 
     // Initialize checkbox fields
@@ -123,7 +143,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
             borderRadius: BorderRadius.circular(20),
           ),
           height: double.infinity,
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
             padding: const EdgeInsets.all(28.0),
             child: Form(
@@ -156,14 +176,103 @@ class _MeasurementFormState extends State<MeasurementForm> {
   Widget _buildCoatMeasurements() {
     return Column(
       children: [
-        _buildTextField(lambaiController, 'Lambai', false),
-        _buildTextField(chaatiController, 'Chaati', false),
-        _buildTextField(kamarController, 'Kamar', false),
-        _buildTextField(hipController, 'Hip', false),
-        _buildTextField(bazuController, 'Baazu', false),
-        _buildTextField(teeraController, 'Teera', false),
-        _buildTextField(galaController, 'Gala', false),
-        _buildTextField(crossBackController, 'Cross Back', false),
+
+
+
+        Container(
+          child: Row(
+            children: [
+              Table(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                  1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                },
+                children: [
+                  TableRow(children: [
+                    Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  ]),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(blambaiController, 'Lambai',false),
+                        _buildTextField(lambaiController, 'Lambai',false),
+                      ]
+                  ),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(bchaatiController, 'Chaati',false),
+                        _buildTextField(chaatiController, 'Chaati',false),
+                      ]
+                  ),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(bkamarController, 'Kamar',false),
+                        _buildTextField(kamarController, 'Kamar',false),
+                      ]
+                  ),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(bhipController, 'Hip',false),
+                        _buildTextField(hipController, 'Hip',false),
+                      ]
+                  ),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(bbazuController, 'Baazu',false),
+                        _buildTextField(bazuController, 'Baazu',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bteeraController, 'Teera',false),
+                        _buildTextField(teeraController, 'Teera',false),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        _buildTextField(bgalaController, 'Gala',false),
+                        _buildTextField(galaController, 'Gala',false),
+                      ]
+                  ),
+
+                  TableRow(
+                      children: [
+                        _buildTextField(bcrossBackController, 'Cross Back',false),
+                        _buildTextField(crossBackController, 'Cross Back',false),
+                      ]
+                  ),
+
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: noteController,
+                    decoration: InputDecoration(
+                      labelText: 'Note',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    maxLines: 5,
+                    // No validation for the note field
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
 
         // Checkbox Options
         CheckboxListTile(
@@ -194,26 +303,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
           },
         ),
 
-        // Note Field (Not Required)
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: noteController,
-            decoration: InputDecoration(
-              labelText: 'Note',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            maxLines: 5,
-            // No validation for the note field
-          ),
-        ),
+
       ],
     );
   }
@@ -222,48 +312,61 @@ class _MeasurementFormState extends State<MeasurementForm> {
     return Card(
       child: InkWell(
         onTap: () {
-          if (_formKey.currentState!.validate()) {
-            // Create a map to store all the data
-            final ref = FirebaseDatabase.instance.ref("measurements");
-            String id = widget.measurement['id'];
-            Map<String, dynamic> formData = {
-              'id': id,
-              'serialNo': serialNoController.text,
-              'name': nameController.text,
-              'mobileNo': mobileNoController.text,
-              'address': addressController.text,
-              'lambai': lambaiController.text,
-              'chaati': chaatiController.text,
-              'kamar': kamarController.text,
-              'hip': hipController.text,
-              'bazu': bazuController.text,
-              'teera': teeraController.text,
-              'gala': galaController.text,
-              'crossBack': crossBackController.text,
-              'twoButtons': twoButtons,
-              'sideJak': sideJak,
-              'fancyButton': fancyButton,
-              'note': noteController.text,
-            };
+          if(blambaiController.text.isEmpty||lambaiController.text.isEmpty||bchaatiController.text.isEmpty||chaatiController.text.isEmpty||bkamarController.text.isEmpty||kamarController.text.isEmpty||bhipController.text.isEmpty||hipController.text.isEmpty||bbazuController.text.isEmpty||bazuController.text.isEmpty||bteeraController.text.isEmpty||teeraController.text.isEmpty||bgalaController.text.isEmpty||galaController.text.isEmpty||bcrossBackController.text.isEmpty||crossBackController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please fill all the TextFeilds')));
+          }
+          else{
+            if (_formKey.currentState!.validate()) {
+              // Create a map to store all the data
+              final ref = FirebaseDatabase.instance.ref("measurements");
+              String id = widget.measurement['id'];
+              Map<String, dynamic> formData = {
+                'id': id,
+                'serialNo': serialNoController.text,
+                'name': nameController.text,
+                'mobileNo': mobileNoController.text,
+                'address': addressController.text,
+                'lambai': lambaiController.text,
+                'chaati': chaatiController.text,
+                'kamar': kamarController.text,
+                'hip': hipController.text,
+                'bazu': bazuController.text,
+                'teera': teeraController.text,
+                'gala': galaController.text,
+                'crossBack': crossBackController.text,
+                'bodylambai': blambaiController.text,
+                'bodychaati': bchaatiController.text,
+                'bodykamar': bkamarController.text,
+                'bodyhip': bhipController.text,
+                'bodybazu': bbazuController.text,
+                'bodyteera': bteeraController.text,
+                'bodygala': bgalaController.text,
+                'bodycrossBack': bcrossBackController.text,
+                'twoButtons': twoButtons,
+                'sideJak': sideJak,
+                'fancyButton': fancyButton,
+                'note': noteController.text,
+              };
 
-            // Store data in Firebase Realtime Database
-            ref.child('Coat/$id').update(formData).then((value) {
-              Provider.of<Measurementprovider>(context, listen: false)
-                  .FetchMeausurements('Coat');
-              // Clear all the text fields after successful submission
+              // Store data in Firebase Realtime Database
+              ref.child('Coat/$id').update(formData).then((value) {
+                Provider.of<Measurementprovider>(context, listen: false)
+                    .FetchMeausurements('Coat');
+                // Clear all the text fields after successful submission
 
 
-              // Reset checkbox values
-              setState(() {
+                // Reset checkbox values
+                setState(() {
 
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Data updated successfully')));
+              }).catchError((error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to submit data: $error')));
               });
-
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Data updated successfully')));
-            }).catchError((error) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Failed to submit data: $error')));
-            });
+            }
           }
         },
         child: Container(

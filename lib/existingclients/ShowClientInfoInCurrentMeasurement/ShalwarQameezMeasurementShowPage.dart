@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/MeasurementProvider.dart';
@@ -63,13 +65,69 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
           children: [
             Text("Qameez Measurements", style: GoogleFonts.lora(fontSize: 22, fontWeight: FontWeight.bold)),
             Divider(),
-            _buildMeasurementRow("Lambai", measurement!['qameezLambai']),
-            _buildMeasurementRow("Chaati", measurement!['chaati']),
-            _buildMeasurementRow("Kamar", measurement!['kamar']),
-            _buildMeasurementRow("Daman", measurement!['daman']),
-            _buildMeasurementRow("Bazu", measurement!['bazu']),
-            _buildMeasurementRow("Teera", measurement!['teera']),
-            _buildMeasurementRow("Gala", measurement!['gala']),
+            Container(
+              child: Row(
+                children: [
+
+                  Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                      1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                    },
+                    children: [
+                      TableRow(children: [
+                        Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ]),
+                      TableRow(
+                        children: [
+                          _buildMeasurementRow("Lambai", measurement!['bodyqameezLambai']),
+                          _buildMeasurementRow("Lambai", measurement!['qameezLambai']),
+                        ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildMeasurementRow("Chaati", measurement!['bodychaati']),
+                            _buildMeasurementRow("Chaati", measurement!['chaati']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildMeasurementRow("Kamar", measurement!['bodykamar']),
+                            _buildMeasurementRow("Kamar", measurement!['kamar']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildMeasurementRow("Daman", measurement!['bodydaman']),
+                            _buildMeasurementRow("Daman", measurement!['daman']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildMeasurementRow("Bazu", measurement!['bodybazu']),
+                            _buildMeasurementRow("Bazu", measurement!['bazu']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildMeasurementRow("Teera", measurement!['bodyteera']),
+                            _buildMeasurementRow("Teera", measurement!['teera']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildMeasurementRow("Gala", measurement!['bodygala']),
+                            _buildMeasurementRow("Gala", measurement!['gala']),
+                          ]
+                      ),
+                    ],
+                  ),
+                  Expanded(child: _buildMeasurementRow("Note", measurement!['QameezNote'])),
+                ],
+              ),
+            ),
+
             _buildCheckbox('Kaff', measurement!['kaff']),
             _buildCheckbox('Shalwar Pocket', measurement!['shalwarPocket']),
             _buildCheckbox('Front Pocket', measurement!['frontPocket']),
@@ -77,7 +135,7 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
             _buildRadioGroup('Kalar or Been', ['Kalar', 'Been'], measurement!['selectedKalarOrBeen']),
             _buildRadioGroup('Daman Style', ['Gool', 'Choras'], measurement!['selectedDamanStyle']),
             _buildRadioGroup('Silai Type', ['Double Silai', 'Triple Silai'], measurement!['selectedSilaiType']),
-            _buildMeasurementRow("Note", measurement!['QameezNote']),
+            
           ],
         ),
       ),
@@ -97,17 +155,79 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
             Divider(),
             _buildRadioGroup('Bottom Type', ['Shalwar', 'Trouser'], measurement!['selectedBottomType']),
             if (measurement!['selectedBottomType'] == 'Shalwar') ...[
-              _buildMeasurementRow("Shalwar Lambai", measurement!['shalwarLambai']),
-              _buildMeasurementRow("Pauncha", measurement!['pauncha']),
-              _buildMeasurementRow("Shalwar Gheera", measurement!['gheera']),
+              Container(
+                child: Row(
+                  children: [
+                    Table(
+                      columnWidths: {
+                        0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                        1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                      },
+                      children: [
+                        TableRow(
+                          children: [
+                            _buildMeasurementRow("Shalwar Lambai", measurement!['bodyshalwarLambai']),
+                            _buildMeasurementRow("Shalwar Lambai", measurement!['shalwarLambai']),
+                          ]
+                        ),
+                        TableRow(
+                            children: [
+                              _buildMeasurementRow("Pauncha", measurement!['bodypauncha']),
+                              _buildMeasurementRow("Pauncha", measurement!['pauncha']),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              _buildMeasurementRow("Shalwar Gheera", measurement!['bodygheera']),
+                              _buildMeasurementRow("Shalwar Gheera", measurement!['gheera']),
+                            ]
+                        ),
+                      ],
+                    ),
+                    Expanded(child: _buildMeasurementRow("Note:", measurement!['ShalwarNote'])),
+
+                  ],
+                ),
+              ),
             ] else ...[
-              _buildMeasurementRow("Trouser Lambai", measurement!['trouserLambai']),
-              _buildMeasurementRow("Pauncha", measurement!['pauncha']),
-              _buildMeasurementRow("Hip", measurement!['hip']),
+              Container(
+                child: Row(
+                  children: [
+                    Table(
+                      columnWidths: {
+                        0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                        1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                      },
+                      children: [
+                        TableRow(
+                            children: [
+                              _buildMeasurementRow("Trouser Lambai", measurement!['bodytrouserLambai']),
+                              _buildMeasurementRow("Trouser Lambai", measurement!['trouserLambai']),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              _buildMeasurementRow("Pauncha", measurement!['bodypauncha']),
+                              _buildMeasurementRow("Pauncha", measurement!['pauncha']),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              _buildMeasurementRow("Hip", measurement!['bodyhip']),
+                              _buildMeasurementRow("Hip", measurement!['hip']),
+                            ]
+                        ),
+                      ],
+                    ),
+                    Expanded(child: _buildMeasurementRow("Note:", measurement!['ShalwarNote'])),
+                  ],
+                ),
+              ),
+
             ],
             _buildCheckbox('Trouser Pocket', measurement!['trouserPocket']),
             _buildCheckbox('Elastic + Doori', measurement!['elasticDoori']),
-            _buildMeasurementRow("Note", measurement!['ShalwarNote']),
+
           ],
         ),
       ),
@@ -116,12 +236,12 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
 
   Widget _buildMeasurementRow(String title, dynamic value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: GoogleFonts.lora(fontSize: 18)),
-          Text(value.toString(), style: GoogleFonts.lora(fontSize: 18, fontWeight: FontWeight.w500)),
+          Text(title, style: TextStyle(fontFamily: 'lora',fontSize: 28,fontWeight: FontWeight.bold)),
+          Text(value.toString(), style: GoogleFonts.lora(fontSize: 22, fontWeight: FontWeight.w500)),
         ],
       ),
     );
@@ -129,7 +249,7 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
 
   Widget _buildCheckbox(String title, bool? value) {
     return CheckboxListTile(
-      title: Text(title, style: GoogleFonts.lora(fontSize: 18)),
+      title: Text(title, style: TextStyle(color: Colors.black,fontFamily: 'lora',fontSize: 18,fontWeight: FontWeight.bold),),
       value: value ?? false,
       onChanged: null, // Disable interaction
       controlAffinity: ListTileControlAffinity.leading, // Place checkbox on the left
@@ -140,10 +260,10 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: GoogleFonts.lora(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(title, style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontFamily: 'lora',fontSize: 18)),
         ...options.map((option) {
           return RadioListTile<String>(
-            title: Text(option, style: GoogleFonts.lora(fontSize: 16)),
+            title: Text(option, style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontFamily: 'lora',fontSize: 18)),
             value: option,
             groupValue: groupValue,
             onChanged: null, // Disable interaction

@@ -22,26 +22,36 @@ class _RegisterEmployeePageState extends State<RegisterEmployeePage> {
   String selectedRole = '1'; // Default role to 'Silai'
 
   void registerEmployee() async {
-    setState(() {
-      isRegistering = true;
-    });
+
     try {
-      final DatabaseReference employeeRef = dref.child('employee');
-      String uid = employeeRef.push().key!;
+      if(nc.text.isEmpty||ec.text.isEmpty||phonec.text.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please all the fields')));
+      }
+      else{
+        setState(() {
+          isRegistering = true;
+        });
+        final DatabaseReference employeeRef = dref.child('employee');
+        String uid = employeeRef.push().key!;
 
-      EmployeeModel employeeModel = EmployeeModel(
-        employeeId: uid,
-        name: nc.text.trim(),
-        email: ec.text.trim(),
-        phone: phonec.text.trim(),
-        role: selectedRole,
-      );
+        EmployeeModel employeeModel = EmployeeModel(
+          employeeId: uid,
+          name: nc.text.trim(),
+          email: ec.text.trim(),
+          phone: phonec.text.trim(),
+          role: selectedRole,
+        );
 
-      await employeeRef.child(uid).set(employeeModel.toMap());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Employee registered successfully")),
-      );
+        await employeeRef.child(uid).set(employeeModel.toMap()).then((value) => {
+          nc.clear(),
+          ec.clear(),
+          phonec.clear()
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Employee registered successfully")),
+        );
 
+      }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $error")),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -63,13 +64,65 @@ class _PantMeasurementShowPageState extends State<PantMeasurementShowPage> {
           children: [
             Text("Pant Measurements", style: GoogleFonts.lora(fontSize: 22, fontWeight: FontWeight.bold)),
             Divider(),
-            _buildReadOnlyField("Lambai", pantData?['lambai']),
-            _buildReadOnlyField("Hip", pantData?['hip']),
-            _buildReadOnlyField("Kamar", pantData?['kamar']),
-            _buildReadOnlyField("Thai", pantData?['thai']),
-            _buildReadOnlyField("Pauncha", pantData?['pauncha']),
+
+
+            Container(
+              child: Row(
+                children: [
+                  Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                      1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                    },
+                    children: [
+                      TableRow(children: [
+                        Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ]),
+
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Lambai", pantData?['bodylambai']),
+                            _buildReadOnlyField("Lambai", pantData?['lambai']),
+                          ]
+                      ),
+
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Hip", pantData?['bodyhip']),
+                            _buildReadOnlyField("Hip", pantData?['hip']),
+                          ]
+                      ),
+
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Kamar", pantData?['bodykamar']),
+                            _buildReadOnlyField("Kamar", pantData?['kamar']),
+                          ]
+                      ),
+
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Thai", pantData?['bodythai']),
+                            _buildReadOnlyField("Thai", pantData?['thai']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Pauncha", pantData?['bodypauncha']),
+                            _buildReadOnlyField("Pauncha", pantData?['pauncha']),
+                          ]
+                      ),
+
+                    ],
+                  ),
+                  Expanded(child: _buildReadOnlyField("Note:", pantData?['note'])),
+                ],
+              ),
+            ),
+
             _buildReadOnlyCheckbox("Smart Fitting", pantData?['smartFitting']),
-            _buildReadOnlyField("Note", pantData?['note']),
+
           ],
         ),
       ),
@@ -78,16 +131,21 @@ class _PantMeasurementShowPageState extends State<PantMeasurementShowPage> {
 
   Widget _buildReadOnlyField(String title, dynamic value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: GoogleFonts.lora(fontSize: 18)),
+          Text(title, style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'lora',fontWeight: FontWeight.bold)),
           Container(
             width: 150,
             child: Text(
               value?.toString() ?? "N/A",
-              style: GoogleFonts.lora(fontSize: 18),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'lora',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+              ),
               textAlign: TextAlign.end,
             ),
           ),
@@ -97,15 +155,11 @@ class _PantMeasurementShowPageState extends State<PantMeasurementShowPage> {
   }
 
   Widget _buildReadOnlyCheckbox(String title, bool? value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: GoogleFonts.lora(fontSize: 18)),
-        Checkbox(
-          value: value ?? false,
-          onChanged: null, // Make it read-only
-        ),
-      ],
+    return CheckboxListTile(
+      title: Text(title, style: TextStyle(color: Colors.black,fontFamily: 'lora',fontSize: 18,fontWeight: FontWeight.bold),),
+      value: value ?? false,
+      onChanged: null, // Disable interaction
+      controlAffinity: ListTileControlAffinity.leading, // Place checkbox on the left
     );
   }
 

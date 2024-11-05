@@ -185,6 +185,7 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
             ),
             SizedBox(height: 10),
             Text('Serial: ${order.serial}', style: TextStyle(fontSize: 16)),
+            Text('Inovice Number: ${order.invoiceNumber}', style: TextStyle(fontSize: 16)),
             Text('Suits Count: ${order.suitsCount}', style: TextStyle(fontSize: 16)),
             Text('Payment: \$${order.paymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
             Text('Order Date: ${order.orderDate.toLocal().toString().split(' ')[0]}', style: TextStyle(fontSize: 16)),
@@ -302,12 +303,18 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
      }
      // Function to build measurement row
      pw.Widget _buildMeasurementRow(String title, dynamic value) {
-       return pw.Row(
-         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-         children: [
-           pw.Text(title, style: pw.TextStyle(fontSize: 18)),
-           pw.Text(value?.toString() ?? "N/A", style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-         ],
+       return pw.Padding(
+         padding: pw.EdgeInsets.symmetric(horizontal:  8),
+         // Apply vertical padding of 8 units
+         child: pw.Row(
+           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+           children: [
+             pw.Text(title, style: pw.TextStyle(fontSize: 18)),
+             pw.Text(value?.toString() ?? "N/A",
+                 style:
+                 pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+           ],
+         ),
        );
      }
 
@@ -318,17 +325,22 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
          children: [
            pw.Text(title, style: pw.TextStyle(fontSize: 18)),
            pw.SizedBox(width: 10),
-           pw.Text(value == true ? 'Selected' : 'N/A', style: pw.TextStyle(fontSize: 18,fontWeight:  pw.FontWeight.bold)),
+           pw.Text(value == true ? 'Selected' : 'N/A',
+               style:
+               pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
          ],
        );
      }
 
      // Function to build radio group
-     pw.Widget _buildRadioGroup(String title, List<String> options, String groupValue) {
+     pw.Widget _buildRadioGroup(
+         String title, List<String> options, String groupValue) {
        return pw.Column(
          crossAxisAlignment: pw.CrossAxisAlignment.start,
          children: [
-           pw.Text(title, style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+           pw.Text(title,
+               style:
+               pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
            ...options.map((option) {
              return pw.Row(
                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -347,41 +359,100 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
      // Switch case for different measurement types
      switch (MeasureMentType) {
        case 'ShalwarQameez':
-         measurement = measurementProvider.shalwarQameez.firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+         measurement = measurementProvider.shalwarQameez
+             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
          // Add pages and content specific to Shalwar Qameez
          pdf.addPage(pw.Page(
            build: (pw.Context context) => pw.Column(
              crossAxisAlignment: pw.CrossAxisAlignment.start,
              children: [
                _buildHeader(),
-               pw.Text('Employee Name: $EmployeeName', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Employee ID: $EmployeeId', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Shalwar Qameez Measurements', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               // pw.Text('Measurements for Order ${order.invoiceNumber}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Employee Name: $EmployeeName',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Shalwar Qameez Measurements',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Measurements for Order ${order.invoiceNumber}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
-               pw.Text('Suits Count ${order.suitsCount}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Suits Count ${order.suitsCount}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 10),
-               _buildMeasurementRow("Serial No: ${measurement!['serialNo']}", measurement!['serialNo']),
-               _buildMeasurementRow("Name: ${measurement!['name']}", measurement!['name']),
-               _buildMeasurementRow("Address: ${measurement!['address']}", measurement!['address']),
-               _buildMeasurementRow("Mobile No: ${measurement!['mobileNo']}", measurement!['mobileNo']),
+               _buildMeasurementRow("Serial No: ${measurement!['serialNo']}",
+                   measurement!['serialNo']),
+               _buildMeasurementRow(
+                   "Name: ${measurement!['name']}", measurement!['name']),
                pw.SizedBox(height: 20),
-               pw.Text('Qameez Measurements', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Qameez Measurements',
+                   style: pw.TextStyle(
+                       fontSize: 22, fontWeight: pw.FontWeight.bold)),
                pw.Divider(),
-               _buildMeasurementRow('Lambai', measurement!['qameezLambai']),
-               _buildMeasurementRow('Chaati', measurement!['chaati']),
-               _buildMeasurementRow('Kamar', measurement!['kamar']),
-               _buildMeasurementRow('Daman', measurement!['daman']),
-               _buildMeasurementRow('Bazu', measurement!['bazu']),
-               _buildMeasurementRow('Teera', measurement!['teera']),
-               _buildMeasurementRow('Gala', measurement!['gala']),
-               _buildCheckbox('Kaff', measurement!['kaff']),
-               _buildCheckbox('Shalwar Pocket', measurement!['shalwarPocket']),
-               _buildCheckbox('Front Pocket', measurement!['frontPocket']),
-               _buildCheckbox('Side Pocket', measurement!['sidePocket']),
-               _buildRadioGroup('Kalar or Been', ['Kalar', 'Been'], measurement!['selectedKalarOrBeen']),
-               _buildRadioGroup('Daman Style', ['Gool', 'Choras'], measurement!['selectedDamanStyle']),
-               _buildRadioGroup('Silai Type', ['Double Silai', 'Triple Silai'], measurement!['selectedSilaiType']),
+               pw.Table(columnWidths: {
+                 0: pw.FixedColumnWidth(200),
+                 // Set the width of the Measurements column
+                 1: pw.FixedColumnWidth(200)
+               }, children: [
+                 pw.TableRow(children: [
+                   pw.Text("Body Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                   pw.Text("Stitching Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow(
+                       'Lambai', measurement!['bodyqameezLambai']),
+                   _buildMeasurementRow('Lambai', measurement!['qameezLambai']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow('Chaati', measurement!['bodychaati']),
+                   _buildMeasurementRow('Chaati', measurement!['chaati']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow('Kamar', measurement!['bodykamar']),
+                   _buildMeasurementRow('Kamar', measurement!['kamar']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow('Daman', measurement!['bodydaman']),
+                   _buildMeasurementRow('Daman', measurement!['daman']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow('Bazu', measurement!['bodybazu']),
+                   _buildMeasurementRow('Bazu', measurement!['bazu']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow('Teera', measurement!['bodyteera']),
+                   _buildMeasurementRow('Teera', measurement!['teera']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow('Gala', measurement!['bodygala']),
+                   _buildMeasurementRow('Gala', measurement!['gala']),
+                 ]),
+               ]),
+               _buildMeasurementRow('Note: ', measurement!['QameezNote']),
+               measurement!['kaff'].toString() == 'true'
+                   ? _buildCheckbox('Kaff', measurement!['kaff'])
+                   : pw.Container(),
+               measurement!['shalwarPocket'].toString() == 'true'
+                   ? _buildCheckbox(
+                   'Shalwar Pocket', measurement!['shalwarPocket'])
+                   : pw.Container(),
+               measurement!['frontPocket'].toString() == 'true'
+                   ? _buildCheckbox('Front Pocket', measurement!['frontPocket'])
+                   : pw.Container(),
+               measurement!['sidePocket'].toString() == 'true'
+                   ? _buildCheckbox('Side Pocket', measurement!['sidePocket'])
+                   : pw.Container(),
+               _buildRadioGroup('Kalar or Been', ['Kalar', 'Been'],
+                   measurement!['selectedKalarOrBeen']),
+               _buildRadioGroup('Daman Style', ['Gool', 'Choras'],
+                   measurement!['selectedDamanStyle']),
+               _buildRadioGroup('Silai Type', ['Double Silai', 'Triple Silai'],
+                   measurement!['selectedSilaiType']),
                _buildMeasurementRow("Note", measurement!['QameezNote']),
              ],
            ),
@@ -391,58 +462,168 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
                  crossAxisAlignment: pw.CrossAxisAlignment.start,
                  children: [
                    _buildHeader(),
-                   pw.Text('Bottom Measurements', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+                   pw.Text('Bottom Measurements',
+                       style: pw.TextStyle(
+                           fontSize: 22, fontWeight: pw.FontWeight.bold)),
                    pw.Divider(),
-                   _buildRadioGroup('Bottom Type', ['Shalwar', 'Trouser'], measurement!['selectedBottomType']),
+                   _buildRadioGroup('Bottom Type', ['Shalwar', 'Trouser'],
+                       measurement!['selectedBottomType']),
                    if (measurement!['selectedBottomType'] == 'Shalwar') ...[
-                     _buildMeasurementRow("Shalwar Lambai", measurement!['shalwarLambai']),
-                     _buildMeasurementRow("Pauncha", measurement!['pauncha']),
-                     _buildMeasurementRow("Shalwar Gheera", measurement!['gheera']),
+                     pw.Table(columnWidths: {
+                       0: pw.FixedColumnWidth(200),
+                       // Set the width of the Measurements column
+                       1: pw.FixedColumnWidth(200)
+                     }, children: [
+                       pw.TableRow(children: [
+                         pw.Text("Body Measurements",
+                             style: pw.TextStyle(
+                                 fontWeight: pw.FontWeight.bold,
+                                 fontSize: 20)),
+                         pw.Text("Stitching Measurements",
+                             style: pw.TextStyle(
+                                 fontWeight: pw.FontWeight.bold,
+                                 fontSize: 20)),
+                       ]),
+                       pw.TableRow(children: [
+                         _buildMeasurementRow("Shalwar Lambai",
+                             measurement!['bodyshalwarLambai']),
+                         _buildMeasurementRow("Shalwar Lambai",
+                             measurement!['shalwarLambai']),
+                       ]),
+                       pw.TableRow(children: [
+                         _buildMeasurementRow(
+                             "Pauncha", measurement!['bodypauncha']),
+                         _buildMeasurementRow(
+                             "Pauncha", measurement!['pauncha']),
+                       ]),
+                       pw.TableRow(children: [
+                         _buildMeasurementRow(
+                             "Shalwar Gheera", measurement!['bodygheera']),
+                         _buildMeasurementRow(
+                             "Shalwar Gheera", measurement!['gheera']),
+                       ]),
+                     ]),
                    ] else ...[
-                     _buildMeasurementRow("Trouser Lambai", measurement!['trouserLambai']),
-                     _buildMeasurementRow("Pauncha", measurement!['pauncha']),
-                     _buildMeasurementRow("Hip", measurement!['hip']),
+                     pw.Table(columnWidths: {
+                       0: pw.FixedColumnWidth(200),
+                       // Set the width of the Measurements column
+                       1: pw.FixedColumnWidth(200)
+                     }, children: [
+                       pw.TableRow(children: [
+                         pw.Text("Body Measurements",
+                             style: pw.TextStyle(
+                                 fontWeight: pw.FontWeight.bold,
+                                 fontSize: 20)),
+                         pw.Text("Stitching Measurements",
+                             style: pw.TextStyle(
+                                 fontWeight: pw.FontWeight.bold,
+                                 fontSize: 20)),
+                       ]),
+                       pw.TableRow(children: [
+                         _buildMeasurementRow("Trouser Lambai",
+                             measurement!['bodytrouserLambai']),
+                         _buildMeasurementRow("Trouser Lambai",
+                             measurement!['trouserLambai']),
+                       ]),
+                       pw.TableRow(children: [
+                         _buildMeasurementRow(
+                             "Pauncha", measurement!['bodypauncha']),
+                         _buildMeasurementRow(
+                             "Pauncha", measurement!['pauncha']),
+                       ]),
+                       pw.TableRow(children: [
+                         _buildMeasurementRow(
+                             "Hip", measurement!['bodyhip']),
+                         _buildMeasurementRow("Hip", measurement!['hip']),
+                       ]),
+                     ]),
                    ],
-                   _buildCheckbox('Trouser Pocket', measurement!['trouserPocket']),
-                   _buildCheckbox('Elastic + Doori', measurement!['elasticDoori']),
+                   _buildCheckbox(
+                       'Trouser Pocket', measurement!['trouserPocket']),
+                   _buildCheckbox(
+                       'Elastic + Doori', measurement!['elasticDoori']),
                    _buildMeasurementRow("Note", measurement!['ShalwarNote']),
-                 ]
-             )
-         ));
+                 ])));
 
          break;
 
        case 'Coat':
-         measurement = measurementProvider.coat.firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+         measurement = measurementProvider.coat
+             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
          pdf.addPage(pw.Page(
            build: (pw.Context context) => pw.Column(
              crossAxisAlignment: pw.CrossAxisAlignment.start,
              children: [
                _buildHeader(),
-               pw.Text('Employee Name: $EmployeeName', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Employee ID: $EmployeeId', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               // pw.Text('Measurements for Order ${order.invoiceNumber}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Employee Name: $EmployeeName',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Measurements for Order ${order.invoiceNumber}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
-               pw.Text('Suits Count ${order.suitsCount}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Suits Count ${order.suitsCount}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 10),
-               pw.Text('Coat Measurements', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               // pw.Text('Measurements for Order ${order.invoiceNumber}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Coat Measurements',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
                _buildMeasurementRow("Serial No", measurement!['serialNo']),
                _buildMeasurementRow("Name", measurement!['name']),
-               _buildMeasurementRow("Address", measurement!['address']),
-               _buildMeasurementRow("Mobile No", measurement!['mobileNo']),
                pw.SizedBox(height: 20),
-               pw.Text("Measurements", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+               pw.Text("Measurements",
+                   style: pw.TextStyle(
+                       fontSize: 22, fontWeight: pw.FontWeight.bold)),
                pw.Divider(),
-               _buildMeasurementRow("Lambai", measurement!['lambai']),
-               _buildMeasurementRow("Chaati", measurement!['chaati']),
-               _buildMeasurementRow("Kamar", measurement!['kamar']),
-               _buildMeasurementRow("Hip", measurement!['hip']),
-               _buildMeasurementRow("Baazu", measurement!['bazu']),
-               _buildMeasurementRow("Teera", measurement!['teera']),
-               _buildMeasurementRow("Gala", measurement!['gala']),
-               _buildMeasurementRow("Cross Back", measurement!['crossBack']),
+               pw.Table(columnWidths: {
+                 0: pw.FixedColumnWidth(200),
+                 // Set the width of the Measurements column
+                 1: pw.FixedColumnWidth(200)
+               }, children: [
+                 pw.TableRow(children: [
+                   pw.Text("Body Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                   pw.Text("Stitching Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Lambai", measurement!['bodylambai']),
+                   _buildMeasurementRow("Lambai", measurement!['lambai']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Chaati", measurement!['bodychaati']),
+                   _buildMeasurementRow("Chaati", measurement!['chaati']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Kamar", measurement!['bodykamar']),
+                   _buildMeasurementRow("Kamar", measurement!['kamar']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Hip", measurement!['bodyhip']),
+                   _buildMeasurementRow("Hip", measurement!['hip']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Baazu", measurement!['bodybazu']),
+                   _buildMeasurementRow("Baazu", measurement!['bazu']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Teera", measurement!['bodyteera']),
+                   _buildMeasurementRow("Teera", measurement!['teera']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Gala", measurement!['bodygala']),
+                   _buildMeasurementRow("Gala", measurement!['gala']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow(
+                       "Cross Back", measurement!['bodycrossBack']),
+                   _buildMeasurementRow("Cross Back", measurement!['crossBack']),
+                 ]),
+               ]),
                _buildCheckbox("2 Buttons", measurement!['twoButtons']),
                _buildCheckbox("Side Jak", measurement!['sideJak']),
                _buildCheckbox("Fancy Button", measurement!['fancyButton']),
@@ -451,74 +632,159 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
            ),
          ));
 
+
          break;
 
        case 'Pants':
-         measurement = measurementProvider.pants.firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+         measurement = measurementProvider.pants
+             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
          pdf.addPage(pw.Page(
            build: (pw.Context context) => pw.Column(
              crossAxisAlignment: pw.CrossAxisAlignment.start,
              children: [
-               pw.Text('Employee Name: $EmployeeName', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Employee ID: $EmployeeId', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               // pw.Text('Measurements for Order ${order.invoiceNumber}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               _buildHeader(),
+               pw.Text('Employee Name: $EmployeeName',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Measurements for Order ${order.invoiceNumber}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
-               pw.Text('Suits Count ${order.suitsCount}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Pants Measurements', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Suits Count ${order.suitsCount}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Pants Measurements',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
                _buildMeasurementRow("Serial No", measurement!['serialNo']),
                _buildMeasurementRow("Name", measurement!['name']),
-               _buildMeasurementRow("Address", measurement!['address']),
-               _buildMeasurementRow("Mobile No", measurement!['mobileNo']),
                pw.SizedBox(height: 20),
-               pw.Text("Measurements", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+               pw.Text("Measurements",
+                   style: pw.TextStyle(
+                       fontSize: 22, fontWeight: pw.FontWeight.bold)),
                pw.Divider(),
-               _buildMeasurementRow("Lambai", measurement!['lambai']),
-               _buildMeasurementRow("Kamar", measurement!['kamar']),
-               _buildMeasurementRow("Hip", measurement!['hip']),
-               _buildMeasurementRow("Pauncha", measurement!['pauncha']),
+               pw.Table(columnWidths: {
+                 0: pw.FixedColumnWidth(200),
+                 // Set the width of the Measurements column
+                 1: pw.FixedColumnWidth(200)
+               }, children: [
+                 pw.TableRow(children: [
+                   pw.Text("Body Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                   pw.Text("Stitching Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Lambai", measurement!['bodylambai']),
+                   _buildMeasurementRow("Lambai", measurement!['lambai']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Kamar", measurement!['bodykamar']),
+                   _buildMeasurementRow("Kamar", measurement!['kamar']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Hip", measurement!['bodyhip']),
+                   _buildMeasurementRow("Hip", measurement!['hip']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow(
+                       "Pauncha", measurement!['bodypauncha']),
+                   _buildMeasurementRow(
+                       "Pauncha", measurement!['pauncha']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Thai", measurement!['bodythai']),
+                   _buildMeasurementRow("Thai", measurement!['thai']),
+                 ]),
+               ]),
                _buildCheckbox("SmartFitting", measurement!['smartFitting']),
-               _buildMeasurementRow("Thai", measurement!['thai']),
-               _buildMeasurementRow("Pocket", measurement!['pocket']),
                _buildMeasurementRow("Note", measurement!['note']),
              ],
            ),
          ));
          break;
        case 'Sherwani':
-         measurement = measurementProvider.sherwani.firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+         measurement = measurementProvider.sherwani
+             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
          pdf.addPage(pw.Page(
            build: (pw.Context context) => pw.Column(
              crossAxisAlignment: pw.CrossAxisAlignment.start,
              children: [
                _buildHeader(),
-               pw.Text('Employee Name: $EmployeeName', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Employee ID: $EmployeeId', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               // pw.Text('Measurements for Order ${order.invoiceNumber}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.SizedBox(height: 20),
-               pw.Text('Suits Count ${order.suitsCount}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.SizedBox(height: 10),
-               pw.Text('Sherwani Measurements', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.SizedBox(height: 20),
+               pw.Text('Employee Name: $EmployeeName',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
 
+               pw.Text('Measurements for Order ${order.invoiceNumber}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.SizedBox(height: 20),
+               pw.Text('Suits Count ${order.suitsCount}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.SizedBox(height: 10),
+               pw.Text('Sherwani Measurements',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.SizedBox(height: 20),
                _buildMeasurementRow("Serial No", measurement!['serialNo']),
                _buildMeasurementRow("Name", measurement!['name']),
-               _buildMeasurementRow("Address", measurement!['address']),
-               _buildMeasurementRow("Mobile No", measurement!['mobileNo']),
                pw.SizedBox(height: 20),
-
-               pw.Text("Measurements", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+               pw.Text("Measurements",
+                   style: pw.TextStyle(
+                       fontSize: 22, fontWeight: pw.FontWeight.bold)),
                pw.Divider(),
 
-               _buildMeasurementRow("Lambai", measurement!['lambai']),
-               _buildMeasurementRow("Chaati", measurement!['chaati']),
-               _buildMeasurementRow("Kamar", measurement!['kamar']),
-               _buildMeasurementRow("Hip", measurement!['hip']),
-               _buildMeasurementRow("Baazu", measurement!['bazu']),
-               _buildMeasurementRow("Teera", measurement!['teera']),
-               _buildMeasurementRow("Gala", measurement!['gala']),
-               _buildMeasurementRow("Cross Back", measurement!['crossBack']),
-
+               pw.Table(columnWidths: {
+                 0: pw.FixedColumnWidth(200),
+                 // Set the width of the Measurements column
+                 1: pw.FixedColumnWidth(200)
+               }, children: [
+                 pw.TableRow(children: [
+                   pw.Text("Body Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                   pw.Text("Stitching Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Lambai", measurement!['bodylambai']),
+                   _buildMeasurementRow("Lambai", measurement!['lambai']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Chaati", measurement!['bodychaati']),
+                   _buildMeasurementRow("Chaati", measurement!['chaati']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Kamar", measurement!['bodykamar']),
+                   _buildMeasurementRow("Kamar", measurement!['kamar']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Hip", measurement!['bodyhip']),
+                   _buildMeasurementRow("Hip", measurement!['hip']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Baazu", measurement!['bodybazu']),
+                   _buildMeasurementRow("Baazu", measurement!['bazu']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Teera", measurement!['bodyteera']),
+                   _buildMeasurementRow("Teera", measurement!['teera']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Gala", measurement!['bodygala']),
+                   _buildMeasurementRow("Gala", measurement!['gala']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow(
+                       "Cross Back", measurement!['bodycrossBack']),
+                   _buildMeasurementRow("Cross Back", measurement!['crossBack']),
+                 ]),
+               ]),
                _buildCheckbox("Fancy Button", measurement!['fancyButton']),
                _buildCheckbox("Special Request", measurement!['specialRequest']),
                _buildMeasurementRow("Note", measurement!['note']),
@@ -527,38 +793,86 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
          ));
          break;
        case 'Waskit':
-         measurement = measurementProvider.Waskit.firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+         measurement = measurementProvider.Waskit.firstWhere(
+                 (m) => m['serialNo'] == SerialNo,
+             orElse: () => {});
          pdf.addPage(pw.Page(
            build: (pw.Context context) => pw.Column(
              crossAxisAlignment: pw.CrossAxisAlignment.start,
              children: [
                _buildHeader(),
-               pw.Text('Employee Name: $EmployeeName', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               pw.Text('Employee ID: $EmployeeId', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-               // pw.Text('Measurements for Order ${order.invoiceNumber}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Employee Name: $EmployeeName',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
+
+               pw.Text('Measurements for Order ${order.invoiceNumber}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
-               pw.Text('Suits Count ${order.suitsCount}', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Suits Count ${order.suitsCount}',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 10),
-               pw.Text('Waskit Measurements', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+               pw.Text('Waskit Measurements',
+                   style: pw.TextStyle(
+                       fontSize: 24, fontWeight: pw.FontWeight.bold)),
                pw.SizedBox(height: 20),
 
                _buildMeasurementRow("Serial No", measurement!['serialNo']),
                _buildMeasurementRow("Name", measurement!['name']),
-               _buildMeasurementRow("Address", measurement!['address']),
-               _buildMeasurementRow("Mobile No", measurement!['mobileNo']),
                pw.SizedBox(height: 20),
 
-               pw.Text("Waskit Measurements", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+               pw.Text("Waskit Measurements",
+                   style: pw.TextStyle(
+                       fontSize: 22, fontWeight: pw.FontWeight.bold)),
                pw.Divider(),
 
-               _buildMeasurementRow("Lambai", measurement!['lambai']),
-               _buildMeasurementRow("Chaati", measurement!['chaati']),
-               _buildMeasurementRow("Kamar", measurement!['kamar']),
-               _buildMeasurementRow("Hip", measurement!['hip']),
-               _buildMeasurementRow("Teera", measurement!['teera']),
+               pw.Table(columnWidths: {
+                 0: pw.FixedColumnWidth(200),
+                 // Set the width of the Measurements column
+                 1: pw.FixedColumnWidth(200)
+               }, children: [
+                 pw.TableRow(children: [
+                   pw.Text("Body Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                   pw.Text("Stitching Measurements",
+                       style: pw.TextStyle(
+                           fontWeight: pw.FontWeight.bold, fontSize: 20)),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Lambai", measurement!['bodylambai']),
+                   _buildMeasurementRow("Lambai", measurement!['lambai']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Chaati", measurement!['bodychaati']),
+                   _buildMeasurementRow("Chaati", measurement!['chaati']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Kamar", measurement!['bodykamar']),
+                   _buildMeasurementRow("Kamar", measurement!['kamar']),
+                 ]),
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Hip", measurement!['bodyhip']),
+                   _buildMeasurementRow("Hip", measurement!['hip']),
+                 ]),
+
+                 pw.TableRow(children: [
+                   _buildMeasurementRow("Teera", measurement!['bodyteera']),
+                   _buildMeasurementRow("Teera", measurement!['teera']),
+                 ]),
+
+
+               ]),
+
+
+
+
+
 
                // Gala Type
-               _buildMeasurementRow("Gala Type", measurement!['galaType'] ?? "N/A"),
+               _buildMeasurementRow(
+                   "Gala Type", measurement!['galaType'] ?? "N/A"),
 
                // Checkbox Option
                _buildCheckbox("Fancy Button", measurement!['fancyButton']),

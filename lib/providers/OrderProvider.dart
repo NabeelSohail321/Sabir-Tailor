@@ -181,11 +181,12 @@ class OrderProvider with ChangeNotifier {
   }
 
 
-  Future<void> updateOrderStatus(String orderId, String employeeId) {
+  Future<void> updateOrderStatus(String orderId, String employeeId, String Employeename) {
     // Update logic here, for example:
     return FirebaseDatabase.instance.ref('orders/$orderId').update({
       'kataiId': employeeId,
-      'kataiStatus': 'pending'
+      'kataiStatus': 'pending',
+      'KataiName':Employeename
     });
   }
   Future<void> updateOrderStatusforSilai(String orderId, String employeeId) async {

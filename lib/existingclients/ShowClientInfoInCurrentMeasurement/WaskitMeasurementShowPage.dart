@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -64,11 +65,62 @@ class _WaskitMeasurementPageState extends State<WaskitMeasurementPage> {
             Text("Waskit Measurements", style: GoogleFonts.lora(fontSize: 22, fontWeight: FontWeight.bold)),
             Divider(),
             // Displaying the Waskit measurements as read-only text fields
-            _buildReadOnlyField("Lambai", measurement?['lambai']),
-            _buildReadOnlyField("Chaati", measurement?['chaati']),
-            _buildReadOnlyField("Kamar", measurement?['kamar']),
-            _buildReadOnlyField("Hip", measurement?['hip']),
-            _buildReadOnlyField("Teera", measurement?['teera']),
+
+            Container(
+              child: Row(
+                children: [
+                  Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(MediaQuery.of(context).size.width*0.25), // Set the width of the Measurements column
+                      1: FixedColumnWidth(MediaQuery.of(context).size.width*0.25)
+                    },
+                    children: [
+                      TableRow(children: [
+                        Text("Body Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text("Stitching Measurements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ]),
+
+
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Lambai", measurement?['bodylambai']),
+                            _buildReadOnlyField("Lambai", measurement?['lambai']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Chaati", measurement?['bodychaati']),
+                            _buildReadOnlyField("Chaati", measurement?['chaati']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Kamar", measurement?['bodykamar']),
+                            _buildReadOnlyField("Kamar", measurement?['kamar']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Hip", measurement?['bodyhip']),
+                            _buildReadOnlyField("Hip", measurement?['hip']),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            _buildReadOnlyField("Teera", measurement?['bodyteera']),
+                            _buildReadOnlyField("Teera", measurement?['teera']),
+
+                          ]
+                      ),
+                    ],
+                  ),
+                  Expanded(child: _buildReadOnlyField("Note", measurement?['note'])),
+                ],
+              ),
+            ),
+
+
+
 
             // Display Gala Type
             _buildReadOnlyGalaType(measurement?['galaType']), // Updated for Gala type
@@ -77,7 +129,7 @@ class _WaskitMeasurementPageState extends State<WaskitMeasurementPage> {
             _buildReadOnlyCheckbox("Fancy Button", measurement?['fancyButton']),
 
             // Note Field
-            _buildReadOnlyField("Note", measurement?['note']),
+
           ],
         ),
       ),
@@ -86,16 +138,21 @@ class _WaskitMeasurementPageState extends State<WaskitMeasurementPage> {
 
   Widget _buildReadOnlyField(String title, dynamic value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: GoogleFonts.lora(fontSize: 18)),
+          Text(title, style: TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'lora',fontWeight: FontWeight.bold)),
           Container(
             width: 150,
             child: Text(
               value?.toString() ?? "N/A",
-              style: GoogleFonts.lora(fontSize: 18),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'lora',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+              ),
               textAlign: TextAlign.end,
             ),
           ),
@@ -105,15 +162,11 @@ class _WaskitMeasurementPageState extends State<WaskitMeasurementPage> {
   }
 
   Widget _buildReadOnlyCheckbox(String title, bool? value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: GoogleFonts.lora(fontSize: 18)),
-        Checkbox(
-          value: value ?? false,
-          onChanged: null, // Make it read-only
-        ),
-      ],
+    return CheckboxListTile(
+      title: Text(title, style: TextStyle(color: Colors.black,fontFamily: 'lora',fontSize: 18,fontWeight: FontWeight.bold),),
+      value: value ?? false,
+      onChanged: null, // Disable interaction
+      controlAffinity: ListTileControlAffinity.leading, // Place checkbox on the left
     );
   }
 
@@ -122,7 +175,7 @@ class _WaskitMeasurementPageState extends State<WaskitMeasurementPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Gala Type", style: GoogleFonts.lora(fontSize: 18)),
+        Text("Gala Type", style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold,fontFamily: 'lora')),
         ...galaTypes.map((type) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.start,

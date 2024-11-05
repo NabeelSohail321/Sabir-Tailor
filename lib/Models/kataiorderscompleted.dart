@@ -8,6 +8,7 @@ class kataiOrder {
   final double paymentAmount; // Payment amount for the order
   final DateTime orderDate; // Date when the order was placed
   final DateTime completionDate; // Date when the order was completed
+  final String invoiceNumber;
   String? employeeName; // Name of the employee handling the order
   String? employeeId; // ID of the employee handling the order
   // Add any additional fields you need here
@@ -21,6 +22,7 @@ class kataiOrder {
     required this.paymentAmount,
     required this.orderDate,
     required this.completionDate,
+    required this.invoiceNumber,
     this.employeeName,
     this.employeeId,
   });
@@ -37,6 +39,7 @@ class kataiOrder {
       completionDate: DateTime.parse(map['completionDate']),
       employeeName: map['employeeName'], // Optional field
       employeeId: map['kataiId'], // Optional field
+      invoiceNumber: map['invoiceNumber'].toString() ?? ''
     );
   }
 
@@ -52,6 +55,7 @@ class kataiOrder {
       'completionDate': completionDate.toIso8601String(),
       'employeeName': employeeName,
       'employeeId': employeeId,
+      'invoiceNumber':invoiceNumber
     };
   }
 }
