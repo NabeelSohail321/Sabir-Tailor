@@ -341,7 +341,7 @@ class _OrdersPageState extends State<OrdersPage> {
             ), // Add your logo here
           ),
           pw.Center(
-            child: pw.Text('Sabir Taylors',
+            child: pw.Text('Sabir Tailor',
                 style:
                     pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
           ),

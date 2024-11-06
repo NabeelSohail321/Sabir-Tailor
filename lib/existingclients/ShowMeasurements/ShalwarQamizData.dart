@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -77,12 +78,12 @@ class _ShalwarQameezDataState extends State<ShalwarQameezData> {
                     SingleChildScrollView(
                       child: Table(
                         border: TableBorder.all(),
-                        columnWidths: const {
-                          0: FixedColumnWidth(100), // Fixed width for Serial No
-                          1: FixedColumnWidth(150), // Fixed width for Name
-                          2: FixedColumnWidth(150), // Fixed width for Mobile No
-                          3: FixedColumnWidth(300), // Fixed width for Address
-                          4: FixedColumnWidth(300), // Fixed width for Actions
+                        columnWidths:  {
+                          0: FixedColumnWidth(MediaQuery.of(context).size.width*0.1), // Fixed width for Serial No
+                          1: FixedColumnWidth(MediaQuery.of(context).size.width*0.1), // Fixed width for Name
+                          2: FixedColumnWidth(MediaQuery.of(context).size.width*0.1), // Fixed width for Mobile No
+                          3: FixedColumnWidth(MediaQuery.of(context).size.width*0.2), // Fixed width for Address
+                          4: FixedColumnWidth(MediaQuery.of(context).size.width*0.2), // Fixed width for Actions
                         },
                         children: [
                           // Table Header

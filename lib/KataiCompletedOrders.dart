@@ -292,7 +292,7 @@ class _KataiCompletedOrdersState extends State<KataiCompletedOrders> {
              ), // Add your logo here
            ),
            pw.Center(
-             child: pw.Text('Sabir Taylors', style: pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
+             child: pw.Text('Sabir Tailor', style: pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
            ),
            pw.Center(
              child: pw.Text('Suits for Silai', style: pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),

@@ -18,6 +18,7 @@ import 'package:printing/printing.dart';
 
 class PlaceOrderPage extends StatelessWidget {
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -570,14 +571,21 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
     return Card(
       child: InkWell(
         onTap: !isLoading? () async {
+          if(searchResults.isEmpty||suitsCountController.text.isEmpty||paymentController.text.isEmpty||completionDate==null){
 
-
-          invoiceNumber = DateTime.now().millisecondsSinceEpoch;
-           await _generateAndPrintPDF();
-           placeOrder();
-          setState(() {
-            isLoading=false;
-          });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fill all The fields first then place the order')));
+          }
+          else{
+            setState(() {
+              isLoading=true;
+            });
+            invoiceNumber = DateTime.now().millisecondsSinceEpoch;
+            await _generateAndPrintPDF();
+            placeOrder();
+            setState(() {
+              isLoading=false;
+            });
+          }
         }:(){},
         child: Container(
           width: 200.0,

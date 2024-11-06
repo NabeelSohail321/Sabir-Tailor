@@ -24,7 +24,7 @@ class AdminModel {
 
 
 class EmployeeModel {
-  final String employeeId;
+  late final String employeeId;
   final String name;
   final String email;
   final String phone;

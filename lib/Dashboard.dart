@@ -7,6 +7,7 @@ import 'package:sabir_tailors/NewClient/NewClientDashboard.dart';
 import 'package:sabir_tailors/placeOrders.dart';
 import 'package:sabir_tailors/providers/admin%20provider.dart';
 
+import 'Employee page.dart';
 import 'KataiCompletedOrders.dart';
 import 'KataiPages/Katai Orders.dart';
 import 'Login.dart';
@@ -176,6 +177,16 @@ class _dashBoardState extends State<dashBoard>  with SingleTickerProviderStateMi
             },));
           },
         ),
+        DashboardItem(
+          icon: Icons.person,
+          label: 'Employee List',
+          onButtonPressed: () {
+
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return DisplayEmployeesPage();
+            },));
+          },
+        ),
 
         // Add other DashboardItems as needed
 
@@ -219,7 +230,7 @@ class _dashBoardState extends State<dashBoard>  with SingleTickerProviderStateMi
           icon: const Icon(Icons.menu),
           onPressed: toggleDrawer,
         ),
-        title: Text("Sabir Taylors",style:   GoogleFonts.lora(),),
+        title: Text("Sabir Tailor",style:   GoogleFonts.lora(),),
         titleTextStyle: TextStyle(
           fontSize: titleFontSize, // Responsive font size for title
           fontWeight: FontWeight.bold,
