@@ -52,6 +52,12 @@ class _ShalwarQameezDataState extends State<ShalwarQameezData> {
                 measurement['serialNo']
                     .toString()
                     .toLowerCase()
+                    .contains(searchQuery.toString().toLowerCase())||measurement['mobileNo']
+                    .toString()
+                    .toLowerCase()
+                    .contains(searchQuery.toString().toLowerCase())||measurement['name']
+                    .toString()
+                    .toLowerCase()
                     .contains(searchQuery.toString().toLowerCase()))
                 .toList();
 
@@ -64,7 +70,7 @@ class _ShalwarQameezDataState extends State<ShalwarQameezData> {
                     // Search Field
                     TextField(
                       decoration: InputDecoration(
-                        labelText: "Search by Serial No",
+                        labelText: "Search by Serial No or Mobile No or Name",
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.search),
                       ),

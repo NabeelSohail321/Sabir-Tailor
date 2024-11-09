@@ -44,6 +44,7 @@ dependencies:
   pdf: ^3.6.3
   printing: ^5.8.0
   js: ^0.6.3
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
       - assets/images/
+      - assets/fonts/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -84,7 +86,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+     - family: JameelNoori
+       fonts:
+       - asset: assets/fonts/JameelNooriNastaleeq.ttf
+     - family: Lora
+       fonts:
+#        - asset: assets/fonts/Lora-Italic-VariableFont_wght.ttf
+        - asset: assets/fonts/Lora-VariableFont_wght.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

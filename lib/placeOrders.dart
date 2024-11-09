@@ -147,14 +147,39 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
     final url = html.Url.createObjectUrlFromBlob(blob);
 
     // Open the PDF in a new browser tab
-    html.window.open(url, '_blank');
+    // html.window.open(url, '_blank');
     final anchor = html.AnchorElement(href: url)
       ..setAttribute('download', 'Orders_${invoiceNumber}.pdf')
       ..click();
 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: SizedBox(
+            width: 400, // Adjust width as needed
+            height: 600, // Adjust height as needed
+            child: PdfPreview(
+              build: (format) => pdfBytes,
+              allowPrinting: true,
+              allowSharing: true,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
 
     // Revoke the object URL after the file is opened
-    html.Url.revokeObjectUrl(url);
+    // html.Url.revokeObjectUrl(url);
   }
 
   Future<Uint8List> _getCompanyLogoBytes() async {
@@ -169,10 +194,10 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
       searchResults.clear();
     });
 
-    final serial = serialController.text.trim();
-    if (serial.isEmpty) {
+    final query = serialController.text.trim();
+    if (query.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter a serial number.")),
+        const SnackBar(content: Text("Please enter a serial number, name, or mobile number.")),
       );
       setState(() {
         isSearching = false;
@@ -181,24 +206,46 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
     }
 
     final DatabaseReference typeRef = dbRef.child(selectedMeasurementType);
-    DataSnapshot snapshot = await typeRef.orderByChild('serialNo').equalTo(serial).get();
+
+    // Perform searches for serialNo, name, and mobileNo
+    DataSnapshot serialSnapshot = await typeRef.orderByChild('serialNo').equalTo(query).get();
+    DataSnapshot nameSnapshot = await typeRef.orderByChild('name').equalTo(query).get();
+    DataSnapshot mobileSnapshot = await typeRef.orderByChild('mobileNo').equalTo(query).get();
 
     setState(() {
       isSearching = false;
-      if (snapshot.exists) {
+
+      if (serialSnapshot.exists || nameSnapshot.exists || mobileSnapshot.exists) {
         isSerialValid = true;
         searchResults = [];
-        snapshot.children.forEach((child) {
-          searchResults.add(child.value as Map<dynamic, dynamic>);
-        });
+
+        // Add results from each search
+        if (serialSnapshot.exists) {
+          for (var child in serialSnapshot.children) {
+            searchResults.add(child.value as Map<dynamic, dynamic>);
+          }
+        }
+        if (nameSnapshot.exists) {
+          for (var child in nameSnapshot.children) {
+            searchResults.add(child.value as Map<dynamic, dynamic>);
+          }
+        }
+        if (mobileSnapshot.exists) {
+          for (var child in mobileSnapshot.children) {
+            searchResults.add(child.value as Map<dynamic, dynamic>);
+          }
+        }
       } else {
         isSerialValid = false;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Serial does not exist in the selected type.")),
+          const SnackBar(content: Text("No matching record found in the selected type.")),
         );
       }
     });
+    // print(searchResults);
+
   }
+
 
   void placeOrder() {
     if(searchResults.isEmpty||suitsCountController.text.isEmpty||paymentController.text.isEmpty||completionDate==null){
@@ -215,14 +262,23 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
         final paymentAmount = double.tryParse(paymentController.text.trim());
         final AdvancepaymentAmount = double.tryParse(AdvancepaymentController.text.trim());
         final remainingAmount = paymentAmount!-AdvancepaymentAmount!;
+        if(AdvancepaymentAmount>paymentAmount){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Advance payment cannot be more than total payment')));
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
 
         final orderRef = FirebaseDatabase.instance.ref('orders');
         String id = orderRef.push().key.toString();
 
         orderRef.child(id).set({
+          "custName": searchResults[0]['name'] ?? 'N/A',
+          "custPhone": searchResults[0]['mobileNo'] ?? 'N/A',
           "id": id,
           'measurementType': selectedMeasurementType,
-          'serial': serialController.text.trim(),
+          'serial': searchResults[0]['serialNo'] ?? 'N/A',
           'suitsCount': suitsCount,
           'paymentAmount': paymentAmount,
           'AdvancePayment': AdvancepaymentAmount ?? '0',
@@ -280,7 +336,6 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
 
   @override
   Widget build(BuildContext context) {
-    AdvancepaymentController.text = "0";
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Center(
@@ -360,7 +415,7 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
           child: TextFormField(
             controller: serialController,
             decoration: InputDecoration(
-              labelText: "Enter Serial Number",
+              labelText: "Enter Serial Number or Mobile No or Name",
               border: OutlineInputBorder(),
               filled: true,
               fillColor: Colors.lightBlue[50], // Light blue background for better visibility
@@ -580,8 +635,11 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
               isLoading=true;
             });
             invoiceNumber = DateTime.now().millisecondsSinceEpoch;
-            await _generateAndPrintPDF();
             placeOrder();
+            if(isLoading){
+              await _generateAndPrintPDF();
+            }
+
             setState(() {
               isLoading=false;
             });
@@ -613,5 +671,4 @@ class _PlaceOrderFormState extends State<PlaceOrderForm> {
       ),
     );
   }
-
 }

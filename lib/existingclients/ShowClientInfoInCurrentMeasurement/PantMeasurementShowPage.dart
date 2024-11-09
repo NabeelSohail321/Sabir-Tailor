@@ -121,7 +121,7 @@ class _PantMeasurementShowPageState extends State<PantMeasurementShowPage> {
               ),
             ),
 
-            _buildReadOnlyCheckbox("Smart Fitting", pantData?['smartFitting']),
+            // _buildReadOnlyCheckbox("Smart Fitting", pantData?['smartFitting']),
 
           ],
         ),

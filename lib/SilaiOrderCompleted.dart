@@ -43,7 +43,7 @@ class _SilaiCompletedOrdersState extends State<SilaiCompletedOrders> {
       setState(() {
         filteredOrders = orderProvider.completedOrders1.where((order) {
           return order.serial.contains(query) ||
-              order.invoiceNumber.toString().contains(query);
+              order.invoiceNumber.toString().contains(query)||order.custPhone.toLowerCase().contains(query)||order.invoiceNumber.toString().contains(query)||order.custName.toLowerCase().contains(query) ;
         }).toList();
       });
     } else {
@@ -78,7 +78,7 @@ class _SilaiCompletedOrdersState extends State<SilaiCompletedOrders> {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
-                hintText: 'Search by Serial Number',
+                hintText: 'Search by Serial Number or Mobile No or Name',
                 border: OutlineInputBorder(),
                 filled: true,
                 fillColor: Colors.white,
@@ -138,8 +138,12 @@ class _SilaiCompletedOrdersState extends State<SilaiCompletedOrders> {
             SizedBox(height: 10),
             Text('Invoice No: ${order.invoiceNumber}', style: TextStyle(fontSize: 16)),
             Text('Serial: ${order.serial}', style: TextStyle(fontSize: 16)),
+            Text('Customer Name: ${order.custName}', style: TextStyle(fontSize: 16)),
+            Text('Customer Phone: ${order.custPhone}', style: TextStyle(fontSize: 16)),
             Text('Suits Count: ${order.suitsCount}', style: TextStyle(fontSize: 16)),
-            Text('Payment: \$${order.paymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
+            Text('Total Payment: \$${order.paymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
+            Text('Advance Payment: \$${order.advanceAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
+            Text('Reamining Payment: \$${order.RemainingpaymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
             Text('Order Date: ${order.orderDate.toLocal().toString().split(' ')[0]}', style: TextStyle(fontSize: 16)),
             Text('Completion Date: ${order.completionDate.toLocal().toString().split(' ')[0]}', style: TextStyle(fontSize: 16)),
             if (order.employeeName != null)

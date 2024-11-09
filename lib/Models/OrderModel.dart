@@ -1,10 +1,14 @@
 // lib/models/order_model.dart
 class Order {
   final String id;
+  final String custName;
+  final String custPhone;
   final String measurementType;
   final String serial;
   final int suitsCount;
   final double paymentAmount;
+  final double advanceAmount;
+  final double remainingPayment;
   final DateTime orderDate;
   final DateTime completionDate;
   final String status;
@@ -19,7 +23,11 @@ class Order {
     required this.orderDate,
     required this.completionDate,
     required this.status,
-    required this.invoiceNumber
+    required this.invoiceNumber,
+    required this.custPhone,
+    required this.custName,
+    required this.remainingPayment,
+    required this.advanceAmount
   });
 
   factory Order.fromMap(Map<dynamic, dynamic> data) {
@@ -32,7 +40,11 @@ class Order {
       orderDate: DateTime.parse(data['orderDate'] ?? DateTime.now().toString()),
       completionDate: DateTime.parse(data['completionDate'] ?? DateTime.now().toString()),
       status:  data['status'] ?? 'N/A',
-      invoiceNumber: data['invoiceNumber']
+      invoiceNumber: data['invoiceNumber'],
+      custName: data['custName'] ?? 'N/A',
+      custPhone: data['custPhone'] ?? 'N/A',
+      remainingPayment: data['reaminingAmount']?? 0,
+      advanceAmount: data['AdvancePayment'] ?? 0
     );
   }
 }

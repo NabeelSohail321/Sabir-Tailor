@@ -49,7 +49,13 @@ class _WaskitDataState extends State<WaskitData> {
                 measurement['serialNo']
                     .toString()
                     .toLowerCase()
-                    .contains(searchQuery.toLowerCase()))
+                    .contains(searchQuery.toLowerCase())||measurement['mobileNo']
+                    .toString()
+                    .toLowerCase()
+                    .contains(searchQuery.toString().toLowerCase())||measurement['name']
+                    .toString()
+                    .toLowerCase()
+                    .contains(searchQuery.toString().toLowerCase()))
                 .toList();
 
             return Align(
@@ -60,7 +66,7 @@ class _WaskitDataState extends State<WaskitData> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        labelText: "Search by Serial No",
+                        labelText: "Search by Serial No or Mobile No or Name",
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.search),
                       ),

@@ -128,14 +128,14 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
               ),
             ),
 
-            _buildCheckbox('Kaff', measurement!['kaff']),
-            _buildCheckbox('Shalwar Pocket', measurement!['shalwarPocket']),
-            _buildCheckbox('Front Pocket', measurement!['frontPocket']),
-            _buildCheckbox('Side Pocket', measurement!['sidePocket']),
-            _buildRadioGroup('Kalar or Been', ['Kalar', 'Been'], measurement!['selectedKalarOrBeen']),
-            _buildRadioGroup('Daman Style', ['Gool', 'Choras'], measurement!['selectedDamanStyle']),
-            _buildRadioGroup('Silai Type', ['Double Silai', 'Triple Silai'], measurement!['selectedSilaiType']),
-            
+            // _buildCheckbox('Kaff', measurement!['kaff']),
+            // _buildCheckbox('Shalwar Pocket', measurement!['shalwarPocket']),
+            // _buildCheckbox('Front Pocket', measurement!['frontPocket']),
+            // _buildCheckbox('Side Pocket', measurement!['sidePocket']),
+            // _buildRadioGroup('Kalar or Been', ['Kalar', 'Been'], measurement!['selectedKalarOrBeen']),
+            // _buildRadioGroup('Daman Style', ['Gool', 'Choras'], measurement!['selectedDamanStyle']),
+            // _buildRadioGroup('Silai Type', ['Double Silai', 'Triple Silai'], measurement!['selectedSilaiType']),
+            //
           ],
         ),
       ),
@@ -225,8 +225,8 @@ class _ShalwarQameezMeasurementPageState extends State<ShalwarQameezMeasurementP
               ),
 
             ],
-            _buildCheckbox('Trouser Pocket', measurement!['trouserPocket']),
-            _buildCheckbox('Elastic + Doori', measurement!['elasticDoori']),
+            // _buildCheckbox('Trouser Pocket', measurement!['trouserPocket']),
+            // _buildCheckbox('Elastic + Doori', measurement!['elasticDoori']),
 
           ],
         ),

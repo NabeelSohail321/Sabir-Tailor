@@ -123,10 +123,10 @@ class _WaskitMeasurementPageState extends State<WaskitMeasurementPage> {
 
 
             // Display Gala Type
-            _buildReadOnlyGalaType(measurement?['galaType']), // Updated for Gala type
-
-            // Checkbox Options
-            _buildReadOnlyCheckbox("Fancy Button", measurement?['fancyButton']),
+            // _buildReadOnlyGalaType(measurement?['galaType']), // Updated for Gala type
+            //
+            // // Checkbox Options
+            // _buildReadOnlyCheckbox("Fancy Button", measurement?['fancyButton']),
 
             // Note Field
 

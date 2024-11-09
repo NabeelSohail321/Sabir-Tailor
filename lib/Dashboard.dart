@@ -13,6 +13,7 @@ import 'KataiPages/Katai Orders.dart';
 import 'Login.dart';
 import 'Orders.dart';
 import 'Register Employee.dart';
+import 'Salary Calculations.dart';
 import 'SilaiOrderCompleted.dart';
 import 'SilaiPages/SilaiOrders.dart';
 import 'drawer.dart';
@@ -187,6 +188,15 @@ class _dashBoardState extends State<dashBoard>  with SingleTickerProviderStateMi
             },));
           },
         ),
+        DashboardItem(
+          icon: Icons.monetization_on,
+          label: 'Salary Calculations',
+          onButtonPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return SalaryCalculations();
+            },));
+          },
+        ),
 
         // Add other DashboardItems as needed
 
@@ -261,6 +271,7 @@ class _dashBoardState extends State<dashBoard>  with SingleTickerProviderStateMi
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: 'button 1',
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return RegisterEmployeePage();
@@ -271,6 +282,7 @@ class _dashBoardState extends State<dashBoard>  with SingleTickerProviderStateMi
           ),
           SizedBox(height: 10,),
           FloatingActionButton(
+            heroTag: 'button 2',
             onPressed: () {
               logout();
             },

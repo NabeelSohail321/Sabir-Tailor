@@ -70,6 +70,53 @@ class _PantsFormState extends State<PantsForm> {
   // Checkbox for Smart Fitting
   bool smartFitting = false;
 
+  final drefQ = FirebaseDatabase.instance.ref('measurements').child('ShalwarQameez');
+  final drefC = FirebaseDatabase.instance.ref('measurements').child('Coat');
+  final drefW = FirebaseDatabase.instance.ref('measurements').child('Waskit');
+  final drefS = FirebaseDatabase.instance.ref('measurements').child('Sherwani');
+  final drefP = FirebaseDatabase.instance.ref('measurements').child('Pants');
+
+  int? newSerial;
+
+  Future<void> getNewSerial() async {
+    List<int> serials = [];
+
+    // Helper function to get the serial number from the last node in a reference
+    Future<void> addSerialFromReference(DatabaseReference ref) async {
+      final snapshot = await ref.orderByKey().limitToLast(1).get();
+      if (snapshot.exists) {
+        // Loop through the snapshot to access each child node
+        snapshot.children.forEach((child) {
+          final data = child.value as Map<dynamic, dynamic>;
+          if (data.containsKey('serialNo')) {
+            // Convert serialNo to an int and add to serials list
+            int serialNo = int.tryParse(data['serialNo'].toString()) ?? 0;
+            serials.add(serialNo);
+          }
+        });
+      }
+    }
+
+    // Call the helper function for each reference
+    await addSerialFromReference(drefQ);
+    await addSerialFromReference(drefC);
+    await addSerialFromReference(drefW);
+    await addSerialFromReference(drefS);
+    await addSerialFromReference(drefP);
+
+    // Find the maximum number in the serials list and add 1 to it
+    int newSerial = serials.isNotEmpty ? (serials.reduce((a, b) => a > b ? a : b) + 1) : 1;
+
+    // Update the serial number controller with the new serial number
+    serialNoController.text = newSerial.toString();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getNewSerial();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -190,15 +237,15 @@ class _PantsFormState extends State<PantsForm> {
 
 
         // Checkbox for Smart Fitting
-        CheckboxListTile(
-          title: Text('Smart Fitting'),
-          value: smartFitting,
-          onChanged: (bool? value) {
-            setState(() {
-              smartFitting = value!;
-            });
-          },
-        ),
+        // CheckboxListTile(
+        //   title: Text('Smart Fitting'),
+        //   value: smartFitting,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       smartFitting = value!;
+        //     });
+        //   },
+        // ),
 
         // Note Field
 
@@ -210,10 +257,10 @@ class _PantsFormState extends State<PantsForm> {
     return Card(
       child: InkWell(
         onTap: !isLoading? () async {
-          if(lambaiController.text.isEmpty||blambaiController.text.isEmpty||hipController.text.isEmpty||bhipController.text.isEmpty||kamarController.text.isEmpty||bkamarController.text.isEmpty||thaiController.text.isEmpty||bthaiController.text.isEmpty||paunchaController.text.isEmpty||bpaunchaController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pleasse fill all the feilds')));
+          if(serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pleasse fill Client Information')));
           }else{
-            if (_formKey.currentState!.validate()) {
+            if (true) {
               setState(() {
                 isLoading = true;
               });
@@ -236,16 +283,16 @@ class _PantsFormState extends State<PantsForm> {
                   'name': nameController.text,
                   'mobileNo': mobileNoController.text,
                   'address': addressController.text,
-                  'lambai': lambaiController.text,
-                  'hip': hipController.text,
-                  'kamar': kamarController.text,
-                  'thai': thaiController.text,
-                  'pauncha': paunchaController.text,
-                  'bodylambai': blambaiController.text,
-                  'bodyhip': bhipController.text,
-                  'bodykamar': bkamarController.text,
-                  'bodythai': bthaiController.text,
-                  'bodypauncha': bpaunchaController.text,
+                  'lambai': lambaiController.text.isNotEmpty? lambaiController.text: '0',
+                  'hip': hipController.text.isNotEmpty? hipController.text: '0',
+                  'kamar': kamarController.text.isNotEmpty ? kamarController.text : '0',
+                  'thai': thaiController.text.isNotEmpty? thaiController.text: '0',
+                  'pauncha': paunchaController.text.isNotEmpty? paunchaController.text: '0',
+                  'bodylambai': blambaiController.text.isNotEmpty? blambaiController.text: '0',
+                  'bodyhip': bhipController.text.isNotEmpty? bhipController.text: '0',
+                  'bodykamar': bkamarController.text.isNotEmpty? bkamarController.text: '0',
+                  'bodythai': bthaiController.text.isNotEmpty? bthaiController.text: '0',
+                  'bodypauncha': bpaunchaController.text.isNotEmpty? bpaunchaController.text: '0',
                   'smartFitting': smartFitting,
                   'note': noteController.text,
                 };
@@ -276,6 +323,7 @@ class _PantsFormState extends State<PantsForm> {
                     isLoading = false;
                   });
 
+                  getNewSerial();
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Data submitted successfully')));
                 }).catchError((error) {
@@ -328,6 +376,7 @@ class _PantsFormState extends State<PantsForm> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        readOnly: label == 'Serial No' ? true:false,
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
@@ -340,9 +389,9 @@ class _PantsFormState extends State<PantsForm> {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        keyboardType: label != 'Name' && label != 'Address' ? TextInputType.number : TextInputType.text,
+        keyboardType: label != 'Name' && label != 'Address' ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
         inputFormatters: label != 'Name' && label != 'Address'
-            ? [FilteringTextInputFormatter.digitsOnly]
+            ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))]
             : [],
         validator: (value) {
           if (value == null || value.isEmpty) {

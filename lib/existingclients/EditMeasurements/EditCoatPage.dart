@@ -275,33 +275,33 @@ class _MeasurementFormState extends State<MeasurementForm> {
         ),
 
         // Checkbox Options
-        CheckboxListTile(
-          title: Text('2 Buttons'),
-          value: twoButtons,
-          onChanged: (bool? value) {
-            setState(() {
-              twoButtons = value!;
-            });
-          },
-        ),
-        CheckboxListTile(
-          title: Text('Side Jak'),
-          value: sideJak,
-          onChanged: (bool? value) {
-            setState(() {
-              sideJak = value!;
-            });
-          },
-        ),
-        CheckboxListTile(
-          title: Text('Fancy Button'),
-          value: fancyButton,
-          onChanged: (bool? value) {
-            setState(() {
-              fancyButton = value!;
-            });
-          },
-        ),
+        // CheckboxListTile(
+        //   title: Text('2 Buttons'),
+        //   value: twoButtons,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       twoButtons = value!;
+        //     });
+        //   },
+        // ),
+        // CheckboxListTile(
+        //   title: Text('Side Jak'),
+        //   value: sideJak,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       sideJak = value!;
+        //     });
+        //   },
+        // ),
+        // CheckboxListTile(
+        //   title: Text('Fancy Button'),
+        //   value: fancyButton,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       fancyButton = value!;
+        //     });
+        //   },
+        // ),
 
 
       ],
@@ -312,11 +312,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
     return Card(
       child: InkWell(
         onTap: () {
-          if(blambaiController.text.isEmpty||lambaiController.text.isEmpty||bchaatiController.text.isEmpty||chaatiController.text.isEmpty||bkamarController.text.isEmpty||kamarController.text.isEmpty||bhipController.text.isEmpty||hipController.text.isEmpty||bbazuController.text.isEmpty||bazuController.text.isEmpty||bteeraController.text.isEmpty||teeraController.text.isEmpty||bgalaController.text.isEmpty||galaController.text.isEmpty||bcrossBackController.text.isEmpty||crossBackController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please fill all the TextFeilds')));
+          if(serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please fill Client Information')));
           }
           else{
-            if (_formKey.currentState!.validate()) {
+            if (true) {
               // Create a map to store all the data
               final ref = FirebaseDatabase.instance.ref("measurements");
               String id = widget.measurement['id'];
@@ -326,22 +326,22 @@ class _MeasurementFormState extends State<MeasurementForm> {
                 'name': nameController.text,
                 'mobileNo': mobileNoController.text,
                 'address': addressController.text,
-                'lambai': lambaiController.text,
-                'chaati': chaatiController.text,
-                'kamar': kamarController.text,
-                'hip': hipController.text,
-                'bazu': bazuController.text,
-                'teera': teeraController.text,
-                'gala': galaController.text,
-                'crossBack': crossBackController.text,
-                'bodylambai': blambaiController.text,
-                'bodychaati': bchaatiController.text,
-                'bodykamar': bkamarController.text,
-                'bodyhip': bhipController.text,
-                'bodybazu': bbazuController.text,
-                'bodyteera': bteeraController.text,
-                'bodygala': bgalaController.text,
-                'bodycrossBack': bcrossBackController.text,
+                'lambai': lambaiController.text.isNotEmpty ? lambaiController.text : '0',
+                'chaati': chaatiController.text.isNotEmpty ? chaatiController.text : '0',
+                'kamar': kamarController.text.isNotEmpty ? kamarController.text : '0',
+                'hip': hipController.text.isNotEmpty ? hipController.text : '0',
+                'bazu': bazuController.text.isNotEmpty ? bazuController.text : '0',
+                'teera': teeraController.text.isNotEmpty ? teeraController.text : '0',
+                'gala': galaController.text.isNotEmpty? galaController.text : '0',
+                'crossBack': crossBackController.text.isNotEmpty? crossBackController.text:'0',
+                'bodylambai': blambaiController.text.isNotEmpty ? blambaiController.text : '0',
+                'bodychaati': bchaatiController.text.isNotEmpty? bchaatiController.text:'0',
+                'bodykamar': bkamarController.text.isNotEmpty? bkamarController.text:'0',
+                'bodyhip': bhipController.text.isNotEmpty ? bhipController.text: '0',
+                'bodybazu': bbazuController.text.isNotEmpty? bbazuController.text: '0',
+                'bodyteera': bteeraController.text.isNotEmpty? bteeraController.text: '0',
+                'bodygala': bgalaController.text.isNotEmpty? bgalaController.text: '0',
+                'bodycrossBack': bcrossBackController.text.isNotEmpty? bcrossBackController.text: '0',
                 'twoButtons': twoButtons,
                 'sideJak': sideJak,
                 'fancyButton': fancyButton,
@@ -421,9 +421,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        keyboardType: label != 'Name' && label != 'Address' ? TextInputType.number : TextInputType.text,
+        keyboardType: label != 'Name' && label != 'Address' ? TextInputType.numberWithOptions(decimal:  true) : TextInputType.text,
         inputFormatters: label != 'Name' && label != 'Address'
-            ? [FilteringTextInputFormatter.digitsOnly]
+            ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))]
             : [],
         // Validator to check if the field is empty
         validator: (value) {

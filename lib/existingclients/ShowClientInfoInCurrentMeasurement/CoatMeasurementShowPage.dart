@@ -141,9 +141,9 @@ class _CoatMeasurementPageState extends State<CoatMeasurementPage> {
 
 
             // Checkbox Options
-            _buildReadOnlyCheckbox("2 Buttons", measurement?['twoButtons']),
-            _buildReadOnlyCheckbox("Side Jak", measurement?['sideJak']),
-            _buildReadOnlyCheckbox("Fancy Button", measurement?['fancyButton']),
+            // _buildReadOnlyCheckbox("2 Buttons", measurement?['twoButtons']),
+            // _buildReadOnlyCheckbox("Side Jak", measurement?['sideJak']),
+            // _buildReadOnlyCheckbox("Fancy Button", measurement?['fancyButton']),
 
             // Note Field
 

@@ -1,7 +1,11 @@
 // lib/Models/OrderModel.dart
 
 class kataiOrder {
+  final double advanceAmount;
+  final double remainingPayment;
   final String id; // Unique identifier for the order
+  final String custName;
+  final String custPhone;
   final String measurementType; // Type of measurement for the order
   final String serial; // Serial number of the order
   final int suitsCount; // Number of suits in the order
@@ -23,6 +27,10 @@ class kataiOrder {
     required this.orderDate,
     required this.completionDate,
     required this.invoiceNumber,
+    required this.custName,
+    required this.custPhone,
+    required this.advanceAmount,
+    required this.remainingPayment,
     this.employeeName,
     this.employeeId,
   });
@@ -39,7 +47,11 @@ class kataiOrder {
       completionDate: DateTime.parse(map['completionDate']),
       employeeName: map['employeeName'], // Optional field
       employeeId: map['kataiId'], // Optional field
-      invoiceNumber: map['invoiceNumber'].toString() ?? ''
+      invoiceNumber: map['invoiceNumber'].toString() ?? '',
+      custPhone: map['custPhone'] ?? 'N/A',
+      custName: map['custName'] ?? 'N/A',
+      advanceAmount: map['AdvancePayment'],
+      remainingPayment: map['reaminingAmount']
     );
   }
 
@@ -66,11 +78,15 @@ class kataiOrder {
 // lib/Models/OrderModel.dart
 
 class silaiOrder {
+  final double advanceAmount;
+  final String custName;
+  final String custPhone;
   final String id;
   final String measurementType;
   final String serial;
   final int suitsCount;
   final double paymentAmount;
+  final double RemainingpaymentAmount;
   final DateTime orderDate;
   final DateTime completionDate;
   final String invoiceNumber; // Add invoiceNumber field
@@ -78,14 +94,18 @@ class silaiOrder {
   String? employeeId;
 
   silaiOrder({
+    required this.custName,
     required this.id,
     required this.measurementType,
     required this.serial,
     required this.suitsCount,
     required this.paymentAmount,
+    required this.RemainingpaymentAmount,
     required this.orderDate,
     required this.completionDate,
     required this.invoiceNumber, // Include invoiceNumber in the constructor
+    required this.advanceAmount,
+    required this.custPhone,
     this.employeeName,
     this.employeeId,
   });
@@ -98,11 +118,15 @@ class silaiOrder {
       serial: map['serial'] ?? '',
       suitsCount: map['suitsCount'] ?? 0,
       paymentAmount: map['paymentAmount']?.toDouble() ?? 0.0,
+      RemainingpaymentAmount: map['reaminingAmount']?.toDouble() ?? 0.0,
       orderDate: DateTime.parse(map['orderDate']),
       completionDate: DateTime.parse(map['completionDate']),
       invoiceNumber: map['invoiceNumber'].toString() ?? '', // Parse invoiceNumber
+      custName: map['custName'].toString() ?? '',
       employeeName: map['employeeName'],
       employeeId: map['silaiId'],
+      advanceAmount: map['AdvancePayment'],
+      custPhone: map['custPhone']
     );
   }
 

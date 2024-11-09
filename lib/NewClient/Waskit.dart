@@ -71,6 +71,53 @@ class _MeasurementFormState extends State<MeasurementForm> {
 
   String? galaType = 'Been';
   bool fancyButton = false;
+  final drefQ = FirebaseDatabase.instance.ref('measurements').child('ShalwarQameez');
+  final drefC = FirebaseDatabase.instance.ref('measurements').child('Coat');
+  final drefW = FirebaseDatabase.instance.ref('measurements').child('Waskit');
+  final drefS = FirebaseDatabase.instance.ref('measurements').child('Sherwani');
+  final drefP = FirebaseDatabase.instance.ref('measurements').child('Pants');
+
+  int? newSerial;
+
+  Future<void> getNewSerial() async {
+    List<int> serials = [];
+
+    // Helper function to get the serial number from the last node in a reference
+    Future<void> addSerialFromReference(DatabaseReference ref) async {
+      final snapshot = await ref.orderByKey().limitToLast(1).get();
+      if (snapshot.exists) {
+        // Loop through the snapshot to access each child node
+        snapshot.children.forEach((child) {
+          final data = child.value as Map<dynamic, dynamic>;
+          if (data.containsKey('serialNo')) {
+            // Convert serialNo to an int and add to serials list
+            int serialNo = int.tryParse(data['serialNo'].toString()) ?? 0;
+            serials.add(serialNo);
+          }
+        });
+      }
+    }
+
+    // Call the helper function for each reference
+    await addSerialFromReference(drefQ);
+    await addSerialFromReference(drefC);
+    await addSerialFromReference(drefW);
+    await addSerialFromReference(drefS);
+    await addSerialFromReference(drefP);
+
+    // Find the maximum number in the serials list and add 1 to it
+    int newSerial = serials.isNotEmpty ? (serials.reduce((a, b) => a > b ? a : b) + 1) : 1;
+
+    // Update the serial number controller with the new serial number
+    serialNoController.text = newSerial.toString();
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getNewSerial();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,60 +238,60 @@ class _MeasurementFormState extends State<MeasurementForm> {
         ),
         
         
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Column(
-            children: [
-              Text("Gala Type", style: TextStyle(fontSize: 18,fontFamily: 'lora',fontWeight: FontWeight.bold)),
-              ListTile(
-                title: const Text('Been'),
-                leading: Radio<String>(
-                  value: 'Been',
-                  groupValue: galaType,
-                  onChanged: (String? value) {
-                    setState(() {
-                      galaType = value;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('Gool Gala'),
-                leading: Radio<String>(
-                  value: 'Gool Gala',
-                  groupValue: galaType,
-                  onChanged: (String? value) {
-                    setState(() {
-                      galaType = value;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('V Gala'),
-                leading: Radio<String>(
-                  value: 'V Gala',
-                  groupValue: galaType,
-                  onChanged: (String? value) {
-                    setState(() {
-                      galaType = value;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        CheckboxListTile(
-          title: Text('Fancy Button'),
-          value: fancyButton,
-          onChanged: (bool? value) {
-            setState(() {
-              fancyButton = value!;
-            });
-          },
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 10.0),
+        //   child: Column(
+        //     children: [
+        //       Text("Gala Type", style: TextStyle(fontSize: 18,fontFamily: 'lora',fontWeight: FontWeight.bold)),
+        //       ListTile(
+        //         title: const Text('Been'),
+        //         leading: Radio<String>(
+        //           value: 'Been',
+        //           groupValue: galaType,
+        //           onChanged: (String? value) {
+        //             setState(() {
+        //               galaType = value;
+        //             });
+        //           },
+        //         ),
+        //       ),
+        //       ListTile(
+        //         title: const Text('Gool Gala'),
+        //         leading: Radio<String>(
+        //           value: 'Gool Gala',
+        //           groupValue: galaType,
+        //           onChanged: (String? value) {
+        //             setState(() {
+        //               galaType = value;
+        //             });
+        //           },
+        //         ),
+        //       ),
+        //       ListTile(
+        //         title: const Text('V Gala'),
+        //         leading: Radio<String>(
+        //           value: 'V Gala',
+        //           groupValue: galaType,
+        //           onChanged: (String? value) {
+        //             setState(() {
+        //               galaType = value;
+        //             });
+        //           },
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        //
+        // CheckboxListTile(
+        //   title: Text('Fancy Button'),
+        //   value: fancyButton,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       fancyButton = value!;
+        //     });
+        //   },
+        // ),
 
         
       ],
@@ -255,11 +302,11 @@ class _MeasurementFormState extends State<MeasurementForm> {
     return Card(
       child: InkWell(
         onTap: !isLoading? () async {
-          if(lambaiController.text.isEmpty||blambaiController.text.isEmpty||chaatiController.text.isEmpty||bchaatiController.text.isEmpty||kamarController.text.isEmpty||bkamarController.text.isEmpty||hipController.text.isEmpty||bhipController.text.isEmpty||teeraController.text.isEmpty||bteeraController.text.isEmpty||galaController.text.isEmpty||bgalaController.text.isEmpty||serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pleasse fill all the feilds')));
+          if(serialNoController.text.isEmpty||nameController.text.isEmpty||mobileNoController.text.isEmpty||addressController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pleasse fill Client Information')));
           }
           else{
-            if (_formKey.currentState!.validate()) {
+            if (true) {
               setState(() {
                 isLoading=true;
               });
@@ -280,18 +327,18 @@ class _MeasurementFormState extends State<MeasurementForm> {
                   'name': nameController.text,
                   'mobileNo': mobileNoController.text,
                   'address': addressController.text,
-                  'lambai': lambaiController.text,
-                  'chaati': chaatiController.text,
-                  'kamar': kamarController.text,
-                  'hip': hipController.text,
-                  'teera': teeraController.text,
-                  'gala': galaController.text,
-                  'bodylambai': blambaiController.text,
-                  'bodychaati': bchaatiController.text,
-                  'bodykamar': bkamarController.text,
-                  'bodyhip': bhipController.text,
-                  'bodyteera': bteeraController.text,
-                  'bodygala': bgalaController.text,
+                  'lambai': lambaiController.text.isNotEmpty? lambaiController.text:'0',
+                  'chaati': chaatiController.text.isNotEmpty? lambaiController.text:'0',
+                  'kamar': kamarController.text.isNotEmpty? kamarController.text:'0',
+                  'hip': hipController.text.isNotEmpty? hipController.text: '0',
+                  'teera': teeraController.text.isNotEmpty? teeraController.text:'0',
+                  'gala': galaController.text.isNotEmpty? galaController.text: '0',
+                  'bodylambai': blambaiController.text.isNotEmpty? blambaiController.text:'0',
+                  'bodychaati': bchaatiController.text.isNotEmpty? bchaatiController.text:'0',
+                  'bodykamar': bkamarController.text.isNotEmpty? bkamarController.text:'0',
+                  'bodyhip': bhipController.text.isNotEmpty?bhipController.text:'0',
+                  'bodyteera': bteeraController.text.isNotEmpty? bteeraController.text: '0',
+                  'bodygala': bgalaController.text.isNotEmpty? bgalaController.text: '0',
                   'galaType': galaType,
                   'fancyButton': fancyButton,
                   'note': noteController.text,
@@ -321,6 +368,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                     fancyButton = false;
                     isLoading = false;
                   });
+                  getNewSerial();
 
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Data submitted successfully')));
@@ -380,6 +428,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        readOnly: label == 'Serial No' ? true:false,
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
@@ -392,9 +441,9 @@ class _MeasurementFormState extends State<MeasurementForm> {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        keyboardType: label != 'Name' && label != 'Address' ? TextInputType.number : TextInputType.text,
+        keyboardType: label != 'Name' && label != 'Address' ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
         inputFormatters: label != 'Name' && label != 'Address'
-            ? [FilteringTextInputFormatter.digitsOnly]
+            ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))]
             : [],
         validator: (value) {
           if (value == null || value.isEmpty) {

@@ -209,7 +209,7 @@ class _MeasurementFormState extends State<MeasurementForm> {
                   Card(
                     child: InkWell(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (true) {
                           // Create a map to store all the data
                           final ref =
                           FirebaseDatabase.instance.ref("measurements");
@@ -221,20 +221,20 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             'name': nameController.text,
                             'mobileNo': mobileNoController.text,
                             'address': addressController.text,
-                            'qameezLambai': qameezLambaiController.text,
-                            'chaati': chaatiController.text,
-                            'kamar': kamarController.text,
-                            'daman': damanController.text,
-                            'bazu': bazuController.text,
-                            'teera': teeraController.text,
-                            'gala': galaController.text,
-                            'bodyqameezLambai': bqameezLambaiController.text,
-                            'bodychaati': bchaatiController.text,
-                            'bodykamar': bkamarController.text,
-                            'bodydaman': bdamanController.text,
-                            'bodybazu': bbazuController.text,
-                            'bodyteera': bteeraController.text,
-                            'bodygala': bgalaController.text,
+                            'qameezLambai': qameezLambaiController.text.isNotEmpty?qameezLambaiController.text:'0',
+                            'chaati': chaatiController.text.isNotEmpty?chaatiController.text:'0',
+                            'kamar': kamarController.text.isNotEmpty? kamarController.text: '0',
+                            'daman': damanController.text.isNotEmpty? damanController.text: '0',
+                            'bazu': bazuController.text.isNotEmpty? bazuController.text: '0',
+                            'teera': teeraController.text.isNotEmpty? teeraController.text: '0',
+                            'gala': galaController.text.isNotEmpty? galaController.text: '0',
+                            'bodyqameezLambai': bqameezLambaiController.text.isNotEmpty? bqameezLambaiController.text:'0',
+                            'bodychaati': bchaatiController.text.isNotEmpty?bchaatiController.text:'0',
+                            'bodykamar': bkamarController.text.isNotEmpty?bkamarController.text: '0',
+                            'bodydaman': bdamanController.text.isNotEmpty?bdamanController.text:'0',
+                            'bodybazu': bbazuController.text.isNotEmpty? bbazuController.text:'0',
+                            'bodyteera': bteeraController.text.isNotEmpty? bteeraController.text: '0',
+                            'bodygala': bgalaController.text.isNotEmpty?bgalaController.text:'0' ,
                             'kaff': kaff,
                             'shalwartype': selectedBottomType,
                             'shalwarPocket': shalwarPocket,
@@ -243,23 +243,23 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             'selectedKalarOrBeen': selectedKalarOrBeen,
                             'selectedDamanStyle': selectedDamanStyle,
                             'selectedSilaiType': selectedSilaiType,
-                            'shalwarLambai': shalwarLambaiController.text,
-                            'trouserLambai': trouserLambaiController.text,
-                            'shalwarGhera': gheeraController.text,
-                            'pauncha': paunchaController.text,
-                            'gheera': gheeraController.text,
-                            'hip': hipController.text,
-                            'bodyshalwarLambai': bshalwarLambaiController.text,
-                            'bodytrouserLambai': btrouserLambaiController.text,
-                            'bodyshalwarGhera': bgheeraController.text,
-                            'bodypauncha': bpaunchaController.text,
-                            'bodygheera': bgheeraController.text,
-                            'bodyhip': hipController.text,
+                            'shalwarLambai': shalwarLambaiController.text.isNotEmpty? shalwarLambaiController.text: '0',
+                            'trouserLambai': trouserLambaiController.text.isNotEmpty?trouserLambaiController.text:'0',
+                            'shalwarGhera': gheeraController.text.isNotEmpty ? gheeraController.text:'0',
+                            'pauncha': paunchaController.text.isNotEmpty ? paunchaController.text : '0',
+                            'gheera': gheeraController.text.isNotEmpty ? gheeraController.text:'0',
+                            'hip': hipController.text.isNotEmpty? hipController.text:'0',
+                            'bodyshalwarLambai': bshalwarLambaiController.text.isNotEmpty? bshalwarLambaiController.text: '0',
+                            'bodytrouserLambai': btrouserLambaiController.text.isNotEmpty? btrouserLambaiController.text : '0',
+                            'bodyshalwarGhera': bgheeraController.text.isNotEmpty? bgheeraController.text:'0',
+                            'bodypauncha': bpaunchaController.text.isNotEmpty? bpaunchaController.text:'0',
+                            'bodygheera': bgheeraController.text.isNotEmpty? bgheeraController.text : '0',
+                            'bodyhip': hipController.text.isNotEmpty? hipController.text: '0',
                             'selectedBottomType': selectedBottomType,
                             'elasticDoori': elasticDoori,
-                            'trouserPocket': trouserPocket,
                             'QameezNote': _QameezNoteController.text,
                             'ShalwarNote': ShalwarNoteController.text,
+                            'trouserPocket': trouserPocket
                           };
 
                           // Store data in Firebase Realtime Database
@@ -353,8 +353,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -372,8 +372,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                   ]),
@@ -393,8 +393,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -412,8 +412,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                   ]),
@@ -433,8 +433,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -452,8 +452,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                   ]),
@@ -473,8 +473,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -492,8 +492,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     )
                   ]),
@@ -513,8 +513,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -532,8 +532,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     )
                   ]),
@@ -553,8 +553,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -572,8 +572,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                   ]),
@@ -593,8 +593,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                     Padding(
@@ -612,8 +612,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                       ),
                     ),
                   ]),
@@ -644,73 +644,73 @@ class _MeasurementFormState extends State<MeasurementForm> {
           ),
         ),
         // The rest of your widgets
-        CheckboxListTile(
-          title: Text('Kaff'),
-          value: kaff,
-          onChanged: (bool? value) {
-            setState(() {
-              kaff = value!;
-            });
-          },
-        ),
-        CheckboxListTile(
-          title: Text('Shalwar Pocket'),
-          value: shalwarPocket,
-          onChanged: (bool? value) {
-            setState(() {
-              shalwarPocket = value!;
-            });
-          },
-        ),
-        CheckboxListTile(
-          title: Text('Front Pocket'),
-          value: frontPocket,
-          onChanged: (bool? value) {
-            setState(() {
-              frontPocket = value!;
-            });
-          },
-        ),
-        CheckboxListTile(
-          title: Text('Side Pocket'),
-          value: sidePocket,
-          onChanged: (bool? value) {
-            setState(() {
-              sidePocket = value!;
-            });
-          },
-        ),
-
-        _buildRadioGroup(
-          title: 'Kalar or Been',
-          options: ['Kalar', 'Been'],
-          groupValue: selectedKalarOrBeen,
-          onChanged: (value) {
-            setState(() {
-              selectedKalarOrBeen = value!;
-            });
-          },
-        ),
-        _buildRadioGroup(
-          title: 'Daman Style',
-          options: ['Gool', 'Choras'],
-          groupValue: selectedDamanStyle,
-          onChanged: (value) {
-            setState(() {
-              selectedDamanStyle = value!;
-            });
-          },
-        ),
-        _buildRadioGroup(
-          title: 'Silai Type',
-          options: ['Double Silai', 'Triple Silai'],
-          groupValue: selectedSilaiType,
-          onChanged: (value) {
-            setState(() {
-              selectedSilaiType = value!;
-            });
-          },
-        ),
+        // CheckboxListTile(
+        //   title: Text('Kaff'),
+        //   value: kaff,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       kaff = value!;
+        //     });
+        //   },
+        // ),
+        // CheckboxListTile(
+        //   title: Text('Shalwar Pocket'),
+        //   value: shalwarPocket,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       shalwarPocket = value!;
+        //     });
+        //   },
+        // ),
+        // CheckboxListTile(
+        //   title: Text('Front Pocket'),
+        //   value: frontPocket,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       frontPocket = value!;
+        //     });
+        //   },
+        // ),
+        // CheckboxListTile(
+        //   title: Text('Side Pocket'),
+        //   value: sidePocket,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       sidePocket = value!;
+        //     });
+        //   },
+        // ),
+        //
+        // _buildRadioGroup(
+        //   title: 'Kalar or Been',
+        //   options: ['Kalar', 'Been'],
+        //   groupValue: selectedKalarOrBeen,
+        //   onChanged: (value) {
+        //     setState(() {
+        //       selectedKalarOrBeen = value!;
+        //     });
+        //   },
+        // ),
+        // _buildRadioGroup(
+        //   title: 'Daman Style',
+        //   options: ['Gool', 'Choras'],
+        //   groupValue: selectedDamanStyle,
+        //   onChanged: (value) {
+        //     setState(() {
+        //       selectedDamanStyle = value!;
+        //     });
+        //   },
+        // ),
+        // _buildRadioGroup(
+        //   title: 'Silai Type',
+        //   options: ['Double Silai', 'Triple Silai'],
+        //   groupValue: selectedSilaiType,
+        //   onChanged: (value) {
+        //     setState(() {
+        //       selectedSilaiType = value!;
+        //     });
+        //   },
+        // ),
         // Continue with other CheckboxListTiles, RadioGroups, and other widgets
 
       ],
@@ -853,8 +853,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                       Padding(
@@ -872,8 +872,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                     ],
@@ -895,8 +895,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                       Padding(
@@ -914,8 +914,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                     ],
@@ -937,8 +937,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                       Padding(
@@ -956,8 +956,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       )
                     ],
@@ -992,8 +992,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                       Padding(
@@ -1011,8 +1011,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                     ],
@@ -1034,8 +1034,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                       Padding(
@@ -1053,8 +1053,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                     ],
@@ -1076,8 +1076,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                       Padding(
@@ -1095,8 +1095,8 @@ class _MeasurementFormState extends State<MeasurementForm> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
+                          keyboardType: TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
                     ],
@@ -1128,24 +1128,24 @@ class _MeasurementFormState extends State<MeasurementForm> {
           ],
         ),
 
-        CheckboxListTile(
-          title: Text('Trouser Pocket'),
-          value: trouserPocket,
-          onChanged: (bool? value) {
-            setState(() {
-              trouserPocket = value!;
-            });
-          },
-        ),
-        CheckboxListTile(
-          title: Text('Elastic + Doori'),
-          value: elasticDoori,
-          onChanged: (bool? value) {
-            setState(() {
-              elasticDoori = value!;
-            });
-          },
-        ),
+        // CheckboxListTile(
+        //   title: Text('Trouser Pocket'),
+        //   value: trouserPocket,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       trouserPocket = value!;
+        //     });
+        //   },
+        // ),
+        // CheckboxListTile(
+        //   title: Text('Elastic + Doori'),
+        //   value: elasticDoori,
+        //   onChanged: (bool? value) {
+        //     setState(() {
+        //       elasticDoori = value!;
+        //     });
+        //   },
+        // ),
 
       ],
     );
