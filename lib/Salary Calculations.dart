@@ -17,6 +17,7 @@ class _SalaryCalculationsState extends State<SalaryCalculations> {
 
   DateTime? startDate;
   DateTime? endDate;
+  bool _isLoading = false;
   String searchQuery = '';
 
   @override
@@ -99,6 +100,9 @@ class _SalaryCalculationsState extends State<SalaryCalculations> {
 
   void filterData() {
     if (startDate != null && endDate != null && endDate!.isAfter(startDate!) && endDate!.isBefore(DateTime.now())) {
+      setState(() {
+        _isLoading = true;
+      });
       _ordersRef
           .orderByChild('orderDate')
           .startAt(startDate!.toIso8601String())
@@ -108,12 +112,21 @@ class _SalaryCalculationsState extends State<SalaryCalculations> {
         final data = event.snapshot.value as Map<dynamic, dynamic>?;
         setState(() {
           orderData = data != null ? data.values.toList() : [];
+          _isLoading = false;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Data Fetched Successfully')));
         });
       });
+      setState(() {
+        _isLoading = false;
+      });
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('End date must be after start date and not after today')),
       );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -136,7 +149,7 @@ class _SalaryCalculationsState extends State<SalaryCalculations> {
   Widget customButton(String label, VoidCallback onPressed) {
     return Card(
       child: InkWell(
-        onTap: onPressed,
+        onTap: !_isLoading? onPressed:(){},
         child: Container(
           width: 300.0,
           height: 50.0,
@@ -145,10 +158,10 @@ class _SalaryCalculationsState extends State<SalaryCalculations> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: Center(
-            child: Text(
+            child: !_isLoading? Text(
               label,
               style: const TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
-            ),
+            ): CircularProgressIndicator(),
           ),
         ),
       ),
@@ -176,6 +189,7 @@ class _SalaryCalculationsState extends State<SalaryCalculations> {
               onChanged: (newRole) {
                 setState(() {
                   selectedRole = newRole!;
+
                 });
                 fetchData();
               },

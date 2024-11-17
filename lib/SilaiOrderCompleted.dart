@@ -141,9 +141,9 @@ class _SilaiCompletedOrdersState extends State<SilaiCompletedOrders> {
             Text('Customer Name: ${order.custName}', style: TextStyle(fontSize: 16)),
             Text('Customer Phone: ${order.custPhone}', style: TextStyle(fontSize: 16)),
             Text('Suits Count: ${order.suitsCount}', style: TextStyle(fontSize: 16)),
-            Text('Total Payment: \$${order.paymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
-            Text('Advance Payment: \$${order.advanceAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
-            Text('Reamining Payment: \$${order.RemainingpaymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
+            Text('Total Payment: ${order.paymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
+            Text('Advance Payment: ${order.advanceAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
+            Text('Reamining Payment: ${order.RemainingpaymentAmount.toStringAsFixed(2)}', style: TextStyle(fontSize: 16)),
             Text('Order Date: ${order.orderDate.toLocal().toString().split(' ')[0]}', style: TextStyle(fontSize: 16)),
             Text('Completion Date: ${order.completionDate.toLocal().toString().split(' ')[0]}', style: TextStyle(fontSize: 16)),
             if (order.employeeName != null)

@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:printing/printing.dart';
@@ -14,6 +17,7 @@ import 'existingclients/ShowClientInfoInCurrentMeasurement/WaskitMeasurementShow
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'dart:typed_data';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'dart:html' as html;
 
 class OrdersPage extends StatefulWidget {
@@ -27,6 +31,8 @@ class _OrdersPageState extends State<OrdersPage> {
   String searchQuery = '';
   Map? measurement;
   bool isLoading = false;
+  Uint8List? byteList;
+  Uint8List? SbyteList;
 
   @override
   void initState() {
@@ -137,11 +143,11 @@ class _OrdersPageState extends State<OrdersPage> {
                 style: TextStyle(fontSize: 16)),
             Text('Suits Count: ${order.suitsCount}',
                 style: TextStyle(fontSize: 16)),
-            Text('Total Payment: \$${order.paymentAmount.toStringAsFixed(2)}',
+            Text('Total Payment: ${order.paymentAmount.toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 16)),
-            Text('Advance Payment: \$${order.advanceAmount.toStringAsFixed(2)}',
+            Text('Advance Payment: ${order.advanceAmount.toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 16)),
-            Text('Remaining Payment: \$${order.remainingPayment}',
+            Text('Remaining Payment: ${order.remainingPayment}',
                 style: TextStyle(fontSize: 16)),
             Text(
                 'Order Date: ${order.orderDate.toLocal().toString().split(' ')[0]}',
@@ -322,133 +328,154 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 
+
+  Future<Uint8List> _generateTextImage(String text) async {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint()..color = Colors.black;
+
+    // Split the text into lines based on the newline character
+    final lines = text.split('\n'); // Split the text into multiple lines
+
+    // Determine text direction based on whether the text is in Urdu or English
+    final bool isUrduText = isUrdu(text); // Implement or use your existing isUrdu function
+    final textDirection = isUrduText ? TextDirection.rtl : TextDirection.ltr;
+
+    double lineHeight = 24.0; // Space between lines
+    double yOffset = 0.0; // Initial yOffset for the first line
+
+    // Create a TextPainter for each line and paint them on the canvas
+    for (var line in lines) {
+      final textPainter = TextPainter(
+        text: TextSpan(text: line, style: TextStyle(color: Colors.black, fontSize: 18, fontFamily: 'JameelNoori', fontWeight: FontWeight.bold)),
+        textDirection: textDirection, // Apply dynamic text direction
+      );
+
+      textPainter.layout(maxWidth: 200); // Set a max width for text wrapping
+
+      // Adjust the offset for RTL or LTR text alignment
+      final offset = textDirection == TextDirection.rtl
+          ? Offset(200 - textPainter.width, yOffset) // Align text to the right if RTL
+          : Offset(0, yOffset); // Default alignment for LTR
+
+      // Paint the line on the canvas
+      textPainter.paint(canvas, offset);
+
+      // Increment the yOffset for the next line
+      yOffset += lineHeight;
+    }
+
+    final picture = recorder.endRecording();
+    final image = await picture.toImage(200, (lineHeight * lines.length).toInt()); // Adjust image height based on number of lines
+    final byteData = await image.toByteData(format: ImageByteFormat.png);
+    return byteData!.buffer.asUint8List();
+  }
+
+
   bool isUrdu(String text) {
     // Regular expression to check for Arabic characters (which includes Urdu)
     final urduRegex = RegExp(r'[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]');
     return urduRegex.hasMatch(text);
   }
 
-  Future<void> _generateAndDownloadPDF(
-    String orderId,
-    String MeasureMentType,
-    String SerialNo,
-    String EmployeeName,
-    String EmployeeId,
-  ) async {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final order = orderProvider.orders
-        .firstWhere((order) => order.id.toString() == orderId);
-    final measurementProvider =
-        Provider.of<Measurementprovider>(context, listen: false);
-    await measurementProvider.FetchMeausurements(MeasureMentType.toString());
+    Future<void> _generateAndDownloadPDF(
+      String orderId,
+      String MeasureMentType,
+      String SerialNo,
+      String EmployeeName,
+      String EmployeeId,
+    ) async {
+      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+      final order = orderProvider.orders
+          .firstWhere((order) => order.id.toString() == orderId);
+      final measurementProvider =
+          Provider.of<Measurementprovider>(context, listen: false);
+      await measurementProvider.FetchMeausurements(MeasureMentType.toString());
 
-    // Create PDF document
-    final logoBytes = await _getCompanyLogoBytes();
-    final urduFont = pw.Font.ttf(
-        await rootBundle.load("assets/fonts/JameelNooriNastaleeq.ttf"));
-    final lorafont = pw.Font.ttf(
-        await rootBundle.load("assets/fonts/Lora-VariableFont_wght.ttf"));
-    final pdf = pw.Document();
-    dynamic measurement;
+      // Create PDF document
+      final logoBytes = await _getCompanyLogoBytes();
+      final urduFont = pw.Font.ttf(
+          await rootBundle.load("assets/fonts/JameelNooriNastaleeq.ttf"));
+      final lorafont = pw.Font.ttf(
+          await rootBundle.load("assets/fonts/Lora-VariableFont_wght.ttf"));
+      final pdf = pw.Document();
+      dynamic measurement;
 
-    pw.Widget _buildHeader() {
-      return pw.Column(
-        children: [
-          pw.Center(
-            child: pw.Image(
-              pw.MemoryImage(logoBytes),
-              width: 100,
-              height: 100,
-            ), // Add your logo here
-          ),
-          pw.Center(
-            child: pw.Text('Sabir Tailor',
-                style:
-                    pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
-          ),
-          pw.Center(
-            child: pw.Text('Suits for Katai',
-                style:
-                    pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
-          ),
-          pw.Divider(thickness: 2),
-        ],
-      );
-    }
-
-    // Function to build measurement row
-    pw.Widget _buildMeasurementRow(String title, dynamic value) {
-      bool _isUrdu = isUrdu(value.toString()); // Check if the text is in Urdu
-      return pw.Padding(
-        padding: pw.EdgeInsets.symmetric(horizontal: 12),
-        child: pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+      pw.Widget _buildHeader() {
+        return pw.Column(
           children: [
-            pw.Text(title, style: pw.TextStyle(fontSize: 18,fontWeight: pw.FontWeight.bold)),
-            pw.Align(
-              alignment: _isUrdu
-                  ? pw.Alignment.centerRight
-                  : pw.Alignment.centerLeft, // Align text based on language
-              child: pw.Text(
-                value?.toString() ?? "N/A",
-                style: pw.TextStyle(
-                  fontSize: 18,
-                  fontWeight: pw.FontWeight.bold,
-                  font: _isUrdu
-                      ? urduFont
-                      : lorafont, // Use correct font for Urdu or English
+            pw.Center(
+              child: pw.Image(
+                pw.MemoryImage(logoBytes),
+                width: 100,
+                height: 100,
+              ), // Add your logo here
+            ),
+            pw.Center(
+              child: pw.Text('Sabir Tailor',
+                  style:
+                      pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
+            ),
+            pw.Center(
+              child: pw.Text('Suits for Katai',
+                  style:
+                      pw.TextStyle(fontSize: 28, fontWeight: pw.FontWeight.bold)),
+            ),
+            pw.Divider(thickness: 2),
+
+          ],
+        );
+      }
+
+
+
+      // Function to build measurement row
+      pw.Widget _buildMeasurementRow(String title, dynamic value) {
+        bool _isUrdu = isUrdu(value.toString()); // Check if the text is in Urdu
+
+        return pw.Padding(
+          padding: pw.EdgeInsets.symmetric(horizontal: 12),
+          child: pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text(
+                title,
+                style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Align(
+                alignment: _isUrdu
+                    ? pw.Alignment.centerRight
+                    : pw.Alignment.centerLeft, // Align text based on language
+                child:pw.Text(
+                  value?.toString() ?? "N/A",
+                  style: pw.TextStyle(
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                    font: _isUrdu ? urduFont : lorafont, // Use correct font
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-    }
+            ],
+          ),
+        );
+      }
 
-    // Function to build checkbox
-    pw.Widget _buildCheckbox(String title, bool? value) {
-      return pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-        children: [
-          pw.Text(title, style: pw.TextStyle(fontSize: 18)),
-          pw.SizedBox(width: 10),
-          pw.Text(value == true ? 'Selected' : 'N/A',
-              style:
-                  pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-        ],
-      );
-    }
+// Helper Function to Convert Text to Image
 
-    // Function to build radio group
-    pw.Widget _buildRadioGroup(
-        String title, List<String> options, String groupValue) {
-      return pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(title,
-              style:
-                  pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-          ...options.map((option) {
-            return pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Text(option, style: pw.TextStyle(fontSize: 16)),
-                if (option == groupValue) ...[
-                  pw.Text(' (Selected)', style: pw.TextStyle(fontSize: 16)),
-                ],
-              ],
-            );
-          }).toList(),
-        ],
-      );
-    }
 
     // Switch case for different measurement types
     switch (MeasureMentType) {
       case 'ShalwarQameez':
         measurement = measurementProvider.shalwarQameez
             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+
         // Add pages and content specific to Shalwar Qameez
+        if(isUrdu(measurement['QameezNote'].toString())){
+          byteList = await _generateTextImage(measurement['QameezNote'].toString());
+        }
+        if(isUrdu(measurement['ShalwarNote'].toString())){
+          SbyteList = await _generateTextImage(measurement['ShalwarNote'].toString());
+        }
         pdf.addPage(pw.Page(
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -540,7 +567,28 @@ class _OrdersPageState extends State<OrdersPage> {
                                 fontSize: 18, fontWeight: pw.FontWeight.bold)),
                       ]),
                     ]),
-                    _buildMeasurementRow("Note:  ", measurement!['QameezNote']),
+                    if(isUrdu(measurement['QameezNote'].toString()))...[
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [
+                          pw.Text("Note:  ", style: pw.TextStyle(
+                            fontSize: 18,
+                            fontWeight: pw.FontWeight.bold
+                          )),
+                          pw.Container(
+                            height: 500,
+                            width: 350,
+                            child: pw.Image(
+                                height: 200,
+                                width: 220,
+                                pw.MemoryImage(byteList!)
+                            ),
+                          )
+                        ]
+                      )
+                    ]else ...[
+                      _buildMeasurementRow('Note:  ', measurement['QameezNote'].toString())
+                    ]
                   ])),
               pw.Text('Bottom Measurements',
                   style: pw.TextStyle(
@@ -621,7 +669,28 @@ class _OrdersPageState extends State<OrdersPage> {
                     ]),
                   ]),
                 ],
-                _buildMeasurementRow("Note:  ", measurement!['ShalwarNote']),
+                    if(isUrdu(measurement['ShalwarNote'].toString()))...[
+                      pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          children: [
+                            pw.Text("Note:  ", style: pw.TextStyle(
+                                fontSize: 18,
+                                fontWeight: pw.FontWeight.bold
+                            )),
+                            pw.Container(
+                              height: 500,
+                              width: 350,
+                              child: pw.Image(
+                                  height: 200,
+                                  width: 220,
+                                  pw.MemoryImage(SbyteList!)
+                              ),
+                            )
+                          ]
+                      )
+                    ]else ...[
+                      _buildMeasurementRow('Note:  ', measurement['ShalwarNote'].toString())
+                    ]
               ])),
             ],
           ),
@@ -632,6 +701,11 @@ class _OrdersPageState extends State<OrdersPage> {
       case 'Coat':
         measurement = measurementProvider.coat
             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+
+
+        if(isUrdu(measurement['note'].toString())){
+          byteList = await _generateTextImage(measurement['note'].toString());
+        }
         pdf.addPage(pw.Page(
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -712,7 +786,19 @@ class _OrdersPageState extends State<OrdersPage> {
                         pw.Text(measurement!['crossBack'],style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
                       ]),
                     ]),
-                    _buildMeasurementRow("Note:  ", measurement!['note']),
+                    if(isUrdu(measurement['note'].toString()))...[
+                      pw.Container(
+                        height: 500,
+                        width: 350,
+                        child: pw.Image(
+                          height: 200,
+                          width: 220,
+                          pw.MemoryImage(byteList!)
+                        )
+                      )
+                    ]else...[
+                      _buildMeasurementRow('Note: ', measurement['note'])
+                    ]
                   ]
                 )
               ),
@@ -726,6 +812,11 @@ class _OrdersPageState extends State<OrdersPage> {
       case 'Pants':
         measurement = measurementProvider.pants
             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+
+        if(isUrdu(measurement['note'].toString())){
+          byteList = await _generateTextImage(measurement['note'].toString());
+        }
+
         pdf.addPage(pw.Page(
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -790,7 +881,19 @@ class _OrdersPageState extends State<OrdersPage> {
                         pw.Text(measurement!['thai'],style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
                       ]),
                     ]),
-                    _buildMeasurementRow("Note:  ", measurement!['note']),
+                    if(isUrdu(measurement['note'].toString()))...[
+                      pw.Container(
+                          height: 500,
+                          width: 350,
+                          child: pw.Image(
+                              height: 200,
+                              width: 220,
+                              pw.MemoryImage(byteList!)
+                          )
+                      )
+                    ]else...[
+                      _buildMeasurementRow('Note: ', measurement['note'])
+                    ]
                   ]
                 )
               ),
@@ -802,6 +905,9 @@ class _OrdersPageState extends State<OrdersPage> {
       case 'Sherwani':
         measurement = measurementProvider.sherwani
             .firstWhere((m) => m['serialNo'] == SerialNo, orElse: () => {});
+        if(isUrdu(measurement['note'].toString())){
+          byteList = await _generateTextImage(measurement['note'].toString());
+        }
         pdf.addPage(pw.Page(
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -879,7 +985,19 @@ class _OrdersPageState extends State<OrdersPage> {
                        pw.Text(measurement!['crossBack'],style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
                      ]),
                    ]),
-                   _buildMeasurementRow("Note:  ", measurement!['note']),
+                   if(isUrdu(measurement['note'].toString()))...[
+                     pw.Container(
+                         height: 500,
+                         width: 350,
+                         child: pw.Image(
+                             height: 200,
+                             width: 220,
+                             pw.MemoryImage(byteList!)
+                         )
+                     )
+                   ]else...[
+                     _buildMeasurementRow('Note: ', measurement['note'])
+                   ]
                  ]
                )
              ),
@@ -892,6 +1010,9 @@ class _OrdersPageState extends State<OrdersPage> {
         measurement = measurementProvider.Waskit.firstWhere(
             (m) => m['serialNo'] == SerialNo,
             orElse: () => {});
+        if(isUrdu(measurement['note'].toString())){
+          byteList = await _generateTextImage(measurement['note'].toString());
+        }
         pdf.addPage(pw.Page(
           build: (pw.Context context) => pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -960,7 +1081,19 @@ class _OrdersPageState extends State<OrdersPage> {
                         pw.Text(measurement!['teera'],style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
                       ]),
                     ]),
-                    _buildMeasurementRow("Note:  ", measurement!['note']),
+                    if(isUrdu(measurement['note'].toString()))...[
+                      pw.Container(
+                          height: 500,
+                          width: 350,
+                          child: pw.Image(
+                              height: 200,
+                              width: 220,
+                              pw.MemoryImage(byteList!)
+                          )
+                      )
+                    ]else...[
+                      _buildMeasurementRow('Note: ', measurement['note'])
+                    ]
                   ]
                 )
               )
@@ -1023,6 +1156,13 @@ class _OrdersPageState extends State<OrdersPage> {
     }
   }
 
+
+
+
+  Future<Uint8List> loadFontFromAssets(String path) async {
+    final ByteData data = await rootBundle.load(path);
+    return data.buffer.asUint8List();
+  }
   Future<Uint8List> _getCompanyLogoBytes() async {
     final logoData = await rootBundle.load('assets/images/logo.png');
     return logoData.buffer.asUint8List();
